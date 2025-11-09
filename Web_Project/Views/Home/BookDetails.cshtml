@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Powerless - Book Details";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/BookDetails.css" asp-append-version="true" />
+}
+
+<div id="bookDetailsPage" class="container my-5">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/Home/BookList">Fantasy Books</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Powerless</li>
+        </ol>
+    </nav>
+
+
+    <div class="row align-items-center mb-5">
+        <div class="col-md-5 text-center">
+            <img src="~/images/FF1.JPG" alt="Powerless" class="img-fluid book-detail-img shadow-sm rounded">
+        </div>
+
+        <div class="col-md-7">
+            <h2 class="book-title">Powerless</h2>
+            <p class="book-author"><strong>Author:</strong> Lauren Roberts</p>
+            <p class="book-genre"><strong>Genre:</strong> Fantasy, Young Adult, Action</p>
+            <p class="book-price"><strong>Price:</strong> PKR 1,500</p>
+            <p class="book-description">
+                A young adult fantasy novel about Paedyn Gray, an "Ordinary" (powerless person) who must hide her true identity in the kingdom of Ilya, a society of "Elites" who gained magical abilities after a plague. When she is forced to participate in a deadly competition, she must survive while concealing her secret from everyone, including a prince she is developing feelings for.
+            </p>
+
+            <a asp-controller="Home" asp-action="Cart" class="btn btn-primary add-to-cart mt-3">Add to Cart</a>
+
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <section class="other-books">
+        <h4 class="mb-3">More Fantasy Books</h4>
+        <div class="d-flex overflow-auto gap-3 pb-3">
+            <div class="book-card">
+                <img src="~/images/ff2.JPG" alt="Powerful" class="book-card-img">
+                <p class="book-card-title">Powerful</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff3.JPG" alt="Once Upon a Broken Heart" class="book-card-img">
+                <p class="book-card-title">Once Upon a Broken Heart</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff4.JPG" alt="A Curse for True Love" class="book-card-img">
+                <p class="book-card-title">A Curse for True Love</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff5.JPG" alt="The Ballad of Never After" class="book-card-img">
+                <p class="book-card-title">The Ballad of Never After</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff6.JPG" alt="The Hodorn Legacy" class="book-card-img">
+                <p class="book-card-title">The Hodorn Legacy</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff7.JPG" alt="The Inheritance games" class="book-card-img">
+                <p class="book-card-title">The Hodorn Legacy</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff8.JPG" alt="Red Queen" class="book-card-img">
+                <p class="book-card-title">Red Queen</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff9.JPG" alt="Glass Sword" class="book-card-img">
+                <p class="book-card-title">Glass Sword</p>
+            </div>
+            <div class="book-card">
+                <img src="~/images/ff10.JPG" alt="Cruel Prince" class="book-card-img">
+                <p class="book-card-title">Cruel Prince</p>
+            </div>
+
+        </div>
+    </section>
+</div>

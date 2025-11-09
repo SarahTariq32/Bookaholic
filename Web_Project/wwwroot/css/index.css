@@ -1,0 +1,246 @@
+﻿
+#indexPage {
+    margin-bottom: 5rem; 
+
+    width: 100%;
+    background-color: #E5DCC5;
+    color: #2C2E43;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    min-height: calc(100vh - 6rem);
+    padding-bottom: 1rem; 
+    box-sizing: border-box;
+}
+
+    #indexPage .carousel,
+    #indexPage .carousel-inner,
+    #indexPage .carousel-item img {
+        width: 100%;
+        height: 90vh;
+        object-fit: cover;
+        border-radius: 0;
+    }
+
+    #indexPage .categories-section {
+        background-color: #F7F3E9;
+        text-align: center;
+        padding: 3rem 2rem;
+    }
+
+        #indexPage .categories-section h2 {
+            font-family: 'Cinzel', serif;
+            color: #2C2E43;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+    #indexPage .categories-container {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden; 
+        gap: 1.5rem;
+        padding: 1rem 1rem;
+        scroll-behavior: smooth;
+    }
+
+        #indexPage .categories-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        #indexPage .categories-container::-webkit-scrollbar-thumb {
+            background-color: rgba(44,46,67,0.4);
+            border-radius: 4px;
+        }
+
+
+    #indexPage .category-card {
+        flex: 0 0 180px;
+        background-color: #FAF9F6;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(44, 46, 67, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        will-change: transform; 
+        backface-visibility: hidden;
+    }
+
+        #indexPage .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(44, 46, 67, 0.2);
+        }
+
+        #indexPage .category-card img {
+            width: 100%;
+            height: 140px; 
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            object-fit: cover;
+        }
+
+        #indexPage .category-card p {
+            padding: 0.6rem;
+            font-weight: 500;
+            color: #2C2E43;
+        }
+
+    #indexPage .book-section {
+        padding: 3rem 2rem;
+        background-color: #E5DCC5;
+    }
+
+        #indexPage .book-section:nth-child(even) {
+            background-color: #F7F3E9;
+        }
+
+        #indexPage .book-section h3 {
+            font-family: 'Cinzel', serif;
+            color: #2C2E43;
+            margin-bottom: 1rem;
+        }
+
+ 
+    #indexPage .books-container {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden; 
+        gap: 1.5rem;
+        padding-bottom: 1rem;
+        scroll-behavior: smooth;
+    }
+
+        #indexPage .books-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        #indexPage .books-container::-webkit-scrollbar-thumb {
+            background-color: rgba(44,46,67,0.4);
+            border-radius: 3px;
+        }
+
+
+    #indexPage .book-card {
+        flex: 0 0 200px; 
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        background-color: #FAF9F6;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(44, 46, 67, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+        #indexPage .book-card img {
+            width: 100%;
+            height: 260px; 
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            object-fit: cover;
+        }
+
+        
+        #indexPage .book-card .book-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem; 
+            padding: 0.8rem; 
+        }
+
+        #indexPage .book-card .book-title {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #2C2E43;
+            line-height: 1.3rem;
+            margin: 0;
+        }
+
+        #indexPage .book-card .book-price {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #C7A86B; 
+            margin: 0;
+        }
+
+        
+        #indexPage .book-card:hover {
+            transform: scale(1.03);
+        }
+
+    #indexPage .see-more {
+        background-color: #2C2E43;
+        color: #FAF9F6;
+        text-decoration: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        display: inline-block;
+    }
+
+        #indexPage .see-more:hover {
+            background-color: #C7A86B;
+            color: #2C2E43;
+        }
+
+
+    #indexPage hr {
+        border: 0;
+        height: 1px;
+        background: linear-gradient(to right, transparent, #C7A86B, transparent);
+        margin: 2rem 0;
+    }
+
+
+
+    #indexPage .carousel {
+        width: 100%;
+        height: 90vh; 
+        position: relative;
+        overflow: hidden;
+    }
+
+    #indexPage .carousel-inner {
+        width: 100%;
+        height: 100%;
+    }
+
+    #indexPage .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center; 
+        border-radius: 0;
+    }
+
+    #indexPage .carousel-control-prev,
+    #indexPage .carousel-control-next {
+        width: 5%;
+        height: 100%;
+        top: 0; 
+        color: #fff;
+        background: none !important;
+        border: none !important;
+        display: flex;
+        align-items: center; 
+        justify-content: center;
+        opacity: 1;
+        transition: color 0.3s ease;
+    }
+
+        #indexPage .carousel-control-prev:hover,
+        #indexPage .carousel-control-next:hover {
+            color: #C7A86B;
+            background: none !important;
+        }
+
+    #indexPage .carousel-control-prev-icon,
+    #indexPage .carousel-control-next-icon {
+        width: 30px;
+        height: 30px;
+        background-size: 100% 100%;
+    }
+
+    #indexPage .carousel-control-prev,
+    #indexPage .carousel-control-next {
+        transition: color 0.3s ease;
+    }

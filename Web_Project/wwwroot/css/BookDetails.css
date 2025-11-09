@@ -1,0 +1,86 @@
+﻿
+#bookDetailsPage {
+    font-family: 'Poppins', sans-serif;
+    color: #2C2E43;
+    background-color: #F7F3E9;
+}
+
+.breadcrumb a {
+    color: #2C2E43;
+    text-decoration: none;
+}
+
+    .breadcrumb a:hover {
+        color: #C7A86B;
+    }
+
+.book-detail-img {
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.book-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.book-author,
+.book-genre,
+.book-price {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+.book-description {
+    font-size: 1rem;
+    margin-top: 1rem;
+    color: #2C2E43;
+}
+
+.add-to-cart {
+    background-color: #2C2E43;
+    color: #FAF9F6;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    transition: background 0.3s;
+}
+
+    .add-to-cart:hover {
+        background-color: #C7A86B;
+        color: #2C2E43;
+    }
+
+.other-books h4 {
+    font-family: 'Cinzel', serif;
+    color: #2C2E43;
+}
+
+.other-books .book-card {
+    flex: 0 0 150px;
+    background-color: #FAF9F6;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(44,46,67,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+    padding: 0.5rem;
+}
+
+    .other-books .book-card:hover {
+        transform: translateY(-5px);
+    }
+
+.book-card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.book-card-title {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: #2C2E43;
+}
