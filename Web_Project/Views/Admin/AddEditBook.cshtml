@@ -1,5 +1,107 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+@model List<Web_Project.Models.Book>
 @{
+    ViewData["Title"] = "Add/Edit Books";
 }
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="books-container">
+    @foreach (var book in Model)
+    {
+        <div class="book-card">
+            <div class="book-info">
+                <p class="book-title">@book.Title</p>
+                <span class="book-price">PKR @book.Price</span>
+            </div>
+            <div class="book-actions">
+                <a asp-controller="Admin" asp-action="EditBook" asp-route-id="@book.Id" class="action-btn edit-btn">Edit</a>
+                <a asp-controller="Admin" asp-action="AddBook" class="action-btn add-btn">Add New</a>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #E5DCC5;
+        color: #2C2E43;
+        margin: 0;
+        padding: 2rem;
+    }
+
+    h2 {
+        font-family: 'Cinzel', serif;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        color: #2C2E43;
+    }
+
+    .books-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .book-card {
+        width: 300px;
+        background: #FAF9F6;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(44,46,67,0.1);
+        padding: 1rem;
+        transition: transform 0.3s;
+    }
+
+        .book-card:hover {
+            transform: scale(1.02);
+        }
+
+    .book-info {
+        margin-bottom: 1rem;
+    }
+
+    .book-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .book-price {
+        font-weight: 500;
+        color: #C7A86B;
+    }
+
+    .book-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .action-btn {
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+    }
+
+    .edit-btn {
+        background: #2C2E43;
+        color: #FAF9F6;
+    }
+
+        .edit-btn:hover {
+            background: #C7A86B;
+            color: #2C2E43;
+        }
+
+    .add-btn {
+        background: #C7A86B;
+        color: #2C2E43;
+    }
+
+        .add-btn:hover {
+            background: #2C2E43;
+            color: #FAF9F6;
+        }
+</style>
+

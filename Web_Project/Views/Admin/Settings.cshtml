@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Settings";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Admin" asp-action="UpdateSettings" method="post">
+    <div class="form-group">
+        <label>Admin Email</label>
+        <input name="Email" type="email" class="form-control" value="admin@example.com" required />
+    </div>
+
+    <div class="form-group">
+        <label>Change Password</label>
+        <input name="Password" type="password" class="form-control" placeholder="Enter new password" />
+    </div>
+
+    <div class="form-group">
+        <label>Site Maintenance Mode</label>
+        <select name="MaintenanceMode" class="form-control">
+            <option value="false" selected>Off</option>
+            <option value="true">On</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn-submit">Save Settings</button>
+</form>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #E5DCC5;
+        color: #2C2E43;
+        padding: 2rem;
+    }
+
+    h2 {
+        font-family: 'Cinzel', serif;
+        margin-bottom: 1.5rem;
+    }
+
+    form {
+        background: #FAF9F6;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 400px;
+        box-shadow: 0 4px 8px rgba(44,46,67,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+
+    input, select {
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #C7A86B;
+        font-size: 1rem;
+    }
+
+    .btn-submit {
+        background: #2C2E43;
+        color: #FAF9F6;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+        .btn-submit:hover {
+            background: #C7A86B;
+            color: #2C2E43;
+        }
+</style>

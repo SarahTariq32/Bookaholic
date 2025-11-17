@@ -1,4 +1,11 @@
+wwwroot\css\admin.css
+wwwroot\css\BookDetails.css
+wwwroot\css\BookList.css
+wwwroot\css\cart.css
+wwwroot\css\checkout.css
+wwwroot\css\index.css
 wwwroot\css\orderConfirmation.css
+wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\biocat.JPG
 wwwroot\images\childcat.JPG
@@ -145,9 +152,3 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
-wwwroot\css\BookDetails.css
-wwwroot\css\BookList.css
-wwwroot\css\cart.css
-wwwroot\css\checkout.css
-wwwroot\css\index.css
-wwwroot\css\site.css

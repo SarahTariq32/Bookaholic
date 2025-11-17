@@ -1,0 +1,84 @@
+﻿@model Web_Project.Models.Book
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Admin" asp-action="EditBook" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label>Book Title</label>
+        <input asp-for="Title" class="form-control" placeholder="Enter book title" required />
+    </div>
+
+    <div class="form-group">
+        <label>Price (PKR)</label>
+        <input asp-for="Price" type="number" class="form-control" placeholder="Enter book price" required />
+    </div>
+
+    <div class="form-group">
+        <label>Author</label>
+        <input asp-for="Author" class="form-control" placeholder="Enter author name" />
+    </div>
+
+    <button type="submit" class="btn-submit">Update Book</button>
+</form>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #E5DCC5;
+        color: #2C2E43;
+        margin: 0;
+        padding: 2rem;
+    }
+
+    h2 {
+        font-family: 'Cinzel', serif;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    form {
+        background: #FAF9F6;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 400px;
+        box-shadow: 0 4px 8px rgba(44,46,67,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+
+    input {
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #C7A86B;
+        font-size: 1rem;
+    }
+
+    .btn-submit {
+        background: #2C2E43;
+        color: #FAF9F6;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+        .btn-submit:hover {
+            background: #C7A86B;
+            color: #2C2E43;
+        }
+</style>

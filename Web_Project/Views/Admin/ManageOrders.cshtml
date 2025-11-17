@@ -1,5 +1,102 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    ViewData["Title"] = "Manage Orders";
 }
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="orders-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Ali Khan</td>
+                <td>PKR 1200</td>
+                <td>Pending</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="Update" class="btn edit-btn">Update</a>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Sara Noor</td>
+                <td>PKR 800</td>
+                <td>Completed</td>
+                <td>
+                    
+                    <a asp-controller="Admin" asp-action="Update" class="btn edit-btn">Update</a>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Usman Ali</td>
+                <td>PKR 1500</td>
+                <td>Shipped</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="Update" class="btn edit-btn">Update</a>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #E5DCC5;
+        color: #2C2E43;
+        padding: 2rem;
+    }
+
+    h2 {
+        font-family: 'Cinzel', serif;
+        margin-bottom: 1.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #FAF9F6;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(44,46,67,0.1);
+    }
+
+    th, td {
+        padding: 0.8rem;
+        text-align: left;
+        border-bottom: 1px solid #C7A86B;
+    }
+
+    th {
+        background: #C7A86B;
+        color: #FAF9F6;
+    }
+
+    .btn {
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .edit-btn {
+        background: #2C2E43;
+        color: #FAF9F6;
+    }
+
+        .edit-btn:hover {
+            background: #C7A86B;
+            color: #2C2E43;
+        }
+</style>

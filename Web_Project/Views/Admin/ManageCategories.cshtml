@@ -1,5 +1,119 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    ViewData["Title"] = "Manage Categories";
 }
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="categories-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Category ID</th>
+                <th>Category Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Fiction</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="EditCategory" asp-route-id="1" class="btn edit-btn">Edit</a>
+                    <a asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="1" class="btn delete-btn">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Non-Fiction</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="EditCategory" asp-route-id="2" class="btn edit-btn">Edit</a>
+                    <a asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="2" class="btn delete-btn">Delete</a>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Science</td>
+                <td>
+                    <a asp-controller="Admin" asp-action="EditCategory" asp-route-id="3" class="btn edit-btn">Edit</a>
+                    <a asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="3" class="btn delete-btn">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <a asp-controller="Admin" asp-action="AddCategory" class="btn add-btn">Add New Category</a>
+</div>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #E5DCC5;
+        color: #2C2E43;
+        padding: 2rem;
+    }
+
+    h2 {
+        font-family: 'Cinzel', serif;
+        margin-bottom: 1.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #FAF9F6;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(44,46,67,0.1);
+    }
+
+    th, td {
+        padding: 0.8rem;
+        text-align: left;
+        border-bottom: 1px solid #C7A86B;
+    }
+
+    th {
+        background: #C7A86B;
+        color: #FAF9F6;
+    }
+
+    .btn {
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .edit-btn {
+        background: #2C2E43;
+        color: #FAF9F6;
+    }
+
+        .edit-btn:hover {
+            background: #C7A86B;
+            color: #2C2E43;
+        }
+
+    .delete-btn {
+        background: #C72C2C;
+        color: #FAF9F6;
+    }
+
+        .delete-btn:hover {
+            background: #FAF9F6;
+            color: #C72C2C;
+        }
+
+    .add-btn {
+        background: #C7A86B;
+        color: #2C2E43;
+        margin-top: 1rem;
+        display: inline-block;
+    }
+
+        .add-btn:hover {
+            background: #2C2E43;
+            color: #FAF9F6;
+        }
+</style>
