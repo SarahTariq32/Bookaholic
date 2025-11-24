@@ -22,4 +22,3 @@ It handles the server-side functionality including managing books, categories, o
 1. Clone the repository:
    ```bash
    git clone https://github.com/web-technologies-fall-2025/se23-project-25-backend-SarahTariq32.git
-
