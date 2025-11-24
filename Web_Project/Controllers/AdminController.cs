@@ -6,7 +6,7 @@ namespace Web_Project.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult DashBoard()
+        public IActionResult Dashboard()
         {
             return View();
         }
@@ -15,17 +15,16 @@ namespace Web_Project.Controllers
         {
             var books = new List<Book>
             {
-                new Book { Id = 1, Title="The Cruel Prince", Author="H. Author", Category="Fantasy", Price=1450 },
-                new Book { Id = 2, Title="Powerless", Author="A. Author", Category="Fantasy", Price=1200 },
-                new Book { Id = 3, Title="Ignite Me", Author="S. Author", Category="Fantasy", Price=1350 },
-                new Book { Id = 4, Title="Once Upon a Broken Heart", Author="C. Author", Category="Fantasy", Price=1500 },
-                new Book { Id = 5, Title="Heart of the Raven Prince", Author="M. Author", Category="Fantasy", Price=1400 },
-                new Book { Id = 6, Title="The Housemaid", Author="T. Author", Category="Thriller", Price=1350 },
-                new Book { Id = 7, Title="Silent Patient", Author="A. Smith", Category="Thriller", Price=1400 },
-                new Book { Id = 8, Title="The Teacher", Author="B. Brown", Category="Thriller", Price=1250 },
-                new Book { Id = 9, Title="The Locked Door", Author="L. James", Category="Thriller", Price=1300 },
-                new Book { Id = 10, Title="Not Quite Dead Yet", Author="R. Taylor", Category="Thriller", Price=1300 }
-
+                new Book { BookID = 1, Title = "The Cruel Prince", Author = "H. Author", CategoryID = 1, Price = 1450 },
+                new Book { BookID = 2, Title = "Powerless", Author = "A. Author", CategoryID = 1, Price = 1200 },
+                new Book { BookID = 3, Title = "Ignite Me", Author = "S. Author", CategoryID = 1, Price = 1350 },
+                new Book { BookID = 4, Title = "Once Upon a Broken Heart", Author = "C. Author", CategoryID = 1, Price = 1500 },
+                new Book { BookID = 5, Title = "Heart of the Raven Prince", Author = "M. Author", CategoryID = 1, Price = 1400 },
+                new Book { BookID = 6, Title = "The Housemaid", Author = "T. Author", CategoryID = 2, Price = 1350 },
+                new Book { BookID = 7, Title = "Silent Patient", Author = "A. Smith", CategoryID = 2, Price = 1400 },
+                new Book { BookID = 8, Title = "The Teacher", Author = "B. Brown", CategoryID = 2, Price = 1250 },
+                new Book { BookID = 9, Title = "The Locked Door", Author = "L. James", CategoryID = 2, Price = 1300 },
+                new Book { BookID = 10, Title = "Not Quite Dead Yet", Author = "R. Taylor", CategoryID = 2, Price = 1300 }
             };
 
             return View(books);
@@ -42,7 +41,7 @@ namespace Web_Project.Controllers
             return View();
         }
 
-        public IActionResult EditBook()
+        public IActionResult EditBook(int id)
         {
             return View();
         }
@@ -64,14 +63,9 @@ namespace Web_Project.Controllers
 
         public IActionResult Settings()
         {
-           
             return View();
         }
-        public IActionResult Update()
-        {
 
-            return View();
-        }
         [HttpPost]
         public IActionResult UpdateSettings(string Email, string Password, string MaintenanceMode)
         {
