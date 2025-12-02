@@ -36,10 +36,25 @@
                 </button>
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
-                    <form class="d-flex mx-3 flex-grow-1" role="search">
+                    @* <form class="d-flex mx-3 flex-grow-1" role="search">
                         <input class="form-control form-control-sm flex-grow-1" type="search" placeholder="Search books..." aria-label="Search">
                         <button class="btn ms-2" type="submit" style="background-color:#C7A86B; color:#2C2E43;">Search</button>
+                    </form> *@
+                    <form id="searchForm" class="d-flex mx-3 flex-grow-1">
+                        <input id="searchInput"
+                               class="form-control form-control-sm flex-grow-1"
+                               type="search"
+                               placeholder="Search books..."
+                               aria-label="Search" />
+
+                        <button id="searchBtn"
+                                class="btn ms-2"
+                                type="submit"
+                                style="background-color:#C7A86B; color:#2C2E43;">
+                            Search
+                        </button>
                     </form>
+
 
                     <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
                         <li class="nav-item"><a class="nav-link text-light nav-hover px-3" href="#">Contact Us</a></li>
@@ -111,6 +126,8 @@
     </header>
 
     <div class="container-fluid p-0 main-content">
+        <div id="searchResults" class="container mt-3"></div>
+
         @RenderBody()
     </div>
 
@@ -167,6 +184,42 @@
             });
         });
     </script>
+    <script>
+        $(document).on("submit", "#searchForm", function (e) {
+            e.preventDefault();
+
+            let query = $("#searchInput").val().trim();
+
+            if (query.length === 0) {
+                $("#searchResults").hide().html("");
+                $("#indexPage").show();
+                return;
+            }
+
+            $.ajax({
+                url: "/Home/Search",
+                type: "GET",
+                data: { query: query },
+
+                success: function (data) {
+                    $("#indexPage").hide();
+
+                    $("#searchResults").show().html(data);
+                },
+
+                error: function () {
+                    $("#indexPage").hide();
+
+                    $("#searchResults").show().html(
+                        "<div class='alert alert-danger text-center mt-3'>Error loading search results.</div>"
+                    );
+                }
+            });
+        });
+    </script>
+
+
+
     @RenderSection("Scripts", required: false)
 
 </body>

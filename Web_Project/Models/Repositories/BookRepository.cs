@@ -1,43 +1,138 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Web_Project.Data;
 using Web_Project.Models.Interfaces;
+using Web_Project.Models;
+using Microsoft.Extensions.Logging;
 
-namespace Web_Project.Models.Repositories
+namespace Web_Project.Repository
 {
     public class BookRepository : IBookRepository
     {
-        private List<Book> _books;
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<BookRepository> _logger;
 
-        public BookRepository()
+        public BookRepository(ApplicationDbContext context, ILogger<BookRepository> logger)
         {
-            _books = new List<Book>
-            {
-                new Book { BookID = 1, Title="The Cruel Prince", Author="H. Author", CategoryID=1, Price=1450 },
-                new Book { BookID = 2, Title="Powerless", Author="A. Author", CategoryID=1, Price=1200 },
-                new Book { BookID = 3, Title="Ignite Me", Author="S. Author", CategoryID=1, Price=1350 },
-                new Book { BookID = 4, Title="Once Upon a Broken Heart", Author="C. Author", CategoryID=1, Price=1500 },
-                new Book { BookID = 5, Title="Heart of the Raven Prince", Author="M. Author", CategoryID=1, Price=1400 },
-                new Book { BookID = 6, Title="The Housemaid", Author="T. Author", CategoryID=2, Price=1350 },
-                new Book { BookID = 7, Title="Silent Patient", Author="A. Smith", CategoryID=2, Price=1400 },
-                new Book { BookID = 8, Title="The Teacher", Author="B. Brown", CategoryID=2, Price=1250 },
-                new Book { BookID = 9, Title="The Locked Door", Author="L. James", CategoryID=2, Price=1300 },
-                new Book { BookID = 10, Title="Not Quite Dead Yet", Author="R. Taylor", CategoryID=2, Price=1300 }
-            };
+            _context = context;
+            _logger = logger;
         }
 
-        public List<Book> GetAllBooks()
+        public IEnumerable<Book> GetAllBooks()
         {
-            return _books;
+            try
+            {
+                _logger.LogInformation("Fetching all books from the database.");
+                return _context.Books.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching all books");
+                throw new Exception("Error fetching all books", ex);
+            }
         }
 
         public Book GetBookById(int id)
         {
-            return _books.FirstOrDefault(b => b.BookID == id);
+            try
+            {
+                _logger.LogInformation($"Fetching book with ID {id}");
+                return _context.Books.FirstOrDefault(b => b.BookID == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error fetching book with ID {id}");
+                throw new Exception($"Error fetching book with ID {id}", ex);
+            }
         }
 
-        public List<Book> GetBooksByCategoryId(int categoryId)
+        public void AddBook(Book book)
         {
-            return _books.Where(b => b.CategoryID == categoryId).ToList();
+            try
+            {
+                _context.Books.Add(book);
+                _context.SaveChanges();
+                _logger.LogInformation($"Book '{book.Title}' added successfully with ID {book.BookID}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding new book");
+                throw new Exception("Error adding new book", ex);
+            }
+        }
+
+        public void UpdateBook(Book book)
+        {
+            try
+            {
+                _context.Books.Update(book);
+                _context.SaveChanges();
+                _logger.LogInformation($"Book '{book.Title}' updated successfully with ID {book.BookID}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating book with ID {book.BookID}");
+                throw new Exception($"Error updating book with ID {book.BookID}", ex);
+            }
+        }
+
+        public void DeleteBook(int id)
+        {
+            try
+            {
+                var book = _context.Books.FirstOrDefault(b => b.BookID == id);
+                if (book != null)
+                {
+                    _context.Books.Remove(book);
+                    _context.SaveChanges();
+                    _logger.LogInformation($"Book '{book.Title}' deleted successfully with ID {id}");
+                }
+                else
+                {
+                    _logger.LogWarning($"Attempted to delete book with ID {id}, but it was not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting book with ID {id}");
+                throw new Exception($"Error deleting book with ID {id}", ex);
+            }
+        }
+
+        public IEnumerable<Book> GetBooksByCategory(int categoryId)
+        {
+            try
+            {
+                _logger.LogInformation($"Fetching books for category ID {categoryId}");
+                return _context.Books
+                    .Where(b => b.CategoryID == categoryId)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error fetching books for category {categoryId}");
+                throw new Exception($"Error fetching books for category {categoryId}", ex);
+            }
+        }
+
+        public IEnumerable<Book> SearchBooks(string keyword)
+        {
+            try
+            {
+                _logger.LogInformation($"Searching books with keyword '{keyword}'");
+                return _context.Books
+                    .Where(b =>
+                        b.Title.Contains(keyword) ||
+                        b.Author.Contains(keyword) ||
+                        b.Description.Contains(keyword))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error searching books with keyword '{keyword}'");
+                throw new Exception($"Error searching books with keyword '{keyword}'", ex);
+            }
         }
     }
 }

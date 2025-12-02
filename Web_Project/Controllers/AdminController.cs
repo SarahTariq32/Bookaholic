@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Web_Project.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Web_Project.Models;
 
 namespace Web_Project.Controllers
 {
+    [Authorize(Policy = "AdminAccess")]
     public class AdminController : Controller
     {
         public IActionResult Dashboard()

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using Web_Project.Models;
+
 namespace Web_Project.Models.Interfaces
 {
-    public interface ICategoryRepository
+    public interface ICategoryService
     {
         IEnumerable<Category> GetAllCategories();
         Category GetCategoryById(int id);
-        Category GetCategoryByName(string name);
-
         void AddCategory(Category category);
         void UpdateCategory(Category category);
         void DeleteCategory(int id);
     }
 }
+

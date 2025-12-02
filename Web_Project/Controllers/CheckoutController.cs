@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web_Project.Models;
 using Web_Project.Models;
 
 namespace Web_Project.Controllers
 {
+    [Authorize(Policy = "UserAccess")]
     public class CheckoutController : Controller
     {
         public IActionResult Index()

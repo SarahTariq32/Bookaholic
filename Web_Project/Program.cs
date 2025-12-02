@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Web_Project.Data;
+using Web_Project.Models.Interfaces;
+using Web_Project.Models.Services;
+using Web_Project.Models;
+using Web_Project.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,23 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminAccess", policy =>
+        policy.RequireClaim("Role", "Admin"));
+
+    options.AddPolicy("UserAccess", policy =>
+        policy.RequireClaim("Role", "User"));
+});
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+//builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+
 
 var app = builder.Build();
 
