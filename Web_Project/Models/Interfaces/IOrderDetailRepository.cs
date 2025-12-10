@@ -1,8 +1,11 @@
-﻿namespace Web_Project.Models.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Web_Project.Models.Interfaces
 {
     public interface IOrderDetailRepository
     {
-        void AddOrderDetail(OrderDetail detail);
-        IEnumerable<OrderDetail> GetOrderDetailsByOrderId(int orderId);
+        Task AddOrderDetailAsync(OrderDetail detail);
+        Task<IEnumerable<OrderDetail>> GetOrderDetailsByOrderIdAsync(int orderId);
     }
 }

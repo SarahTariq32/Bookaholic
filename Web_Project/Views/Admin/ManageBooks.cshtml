@@ -1,0 +1,11 @@
+﻿@model List<Book>
+
+<div class="container mt-5">
+    <h2 class="mb-4" style="color:#ff4d79;">Manage Books</h2>
+
+    <a href="/Admin/AddBook" class="btn btn-pink mb-3">+ Add New Book</a>
+
+    <div id="bookTable">
+        @await Html.PartialAsync("_BookTable", Model)
+    </div>
+</div>

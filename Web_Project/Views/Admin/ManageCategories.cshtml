@@ -1,4 +1,4 @@
-﻿
+﻿@* 
 @{
     ViewData["Title"] = "Manage Categories";
 }
@@ -116,4 +116,21 @@
             background: #2C2E43;
             color: #FAF9F6;
         }
-</style>
+</style> *@
+@model List<Category>
+
+<div class="container mt-5">
+    <h2 class="mb-4" style="color:#ff4d79;">Manage Categories</h2>
+
+    <form method="post" asp-action="AddCategory" class="mb-4">
+        <div class="input-group">
+            <input name="CategoryName" class="form-control" placeholder="New Category..." />
+            <button class="btn btn-pink">Add</button>
+        </div>
+    </form>
+
+    <div id="categoryTable">
+        @await Html.PartialAsync("_CategoryTable", Model)
+    </div>
+
+</div>

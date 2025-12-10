@@ -76,12 +76,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdEJvb2suY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/ManageBooks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlQm9va3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/ManageCategories.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlQ2F0ZWdvcmllcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/ManageOrders.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlT3JkZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/OrderDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cT3JkZXJEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/Reports.cshtml]
@@ -94,6 +102,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/Update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXBkYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/_BookTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX0Jvb2tUYWJsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/_CategoryTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX0NhdGVnb3J5VGFibGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Admin/_OrderTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cX09yZGVyVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/sarah/OneDrive/Desktop/Web_Project/Web_Project/Views/Books/BookDetails.cshtml]

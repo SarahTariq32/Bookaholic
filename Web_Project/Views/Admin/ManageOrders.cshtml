@@ -1,4 +1,4 @@
-﻿
+﻿@* 
 @{
     ViewData["Title"] = "Manage Orders";
 }
@@ -99,4 +99,13 @@
             background: #C7A86B;
             color: #2C2E43;
         }
-</style>
+</style> *@
+@model List<Order>
+
+<div class="container mt-5">
+    <h2 class="mb-4" style="color:#ff4d79;">Manage Orders</h2>
+
+    <div id="orderTable">
+        @await Html.PartialAsync("_OrderTable", Model)
+    </div>
+</div>

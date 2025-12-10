@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Admin Dashboard";
 }
 
@@ -147,4 +147,66 @@
         </div>
     </div>
 </body>
-</html>
+</html> *@
+@model dynamic
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4" style="color:#ff4d79;">Admin Dashboard</h2>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0" style="background:#2a2a2a;color:white;">
+                <div class="card-body text-center">
+                    <h3>@Model.TotalBooks</h3>
+                    <p>Total Books</p>
+                    <a href="/Admin/ManageBooks" class="btn btn-pink">Manage Books</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0" style="background:#2a2a2a;color:white;">
+                <div class="card-body text-center">
+                    <h3>@Model.TotalOrders</h3>
+                    <p>Total Orders</p>
+                    <a href="/Admin/ManageOrders" class="btn btn-pink">View Orders</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0" style="background:#2a2a2a;color:white;">
+                <div class="card-body text-center">
+                    <h3>@Model.Delivered</h3>
+                    <p>Delivered</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/Admin/ManageCategories" class="btn btn-pink me-2">Manage Categories</a>
+        <a href="/Admin/ManageBooks" class="btn btn-pink me-2">Manage Books</a>
+        <a href="/Admin/ManageOrders" class="btn btn-pink">Manage Orders</a>
+    </div>
+
+</div>
+
+<style>
+    .btn-pink {
+        background-color: #ff4d79;
+        color: white;
+        border-radius: 8px;
+    }
+
+        .btn-pink:hover {
+            background-color: #ff2d67;
+            color: white;
+        }
+</style>

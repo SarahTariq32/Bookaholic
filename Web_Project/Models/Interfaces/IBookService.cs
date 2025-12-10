@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using Web_Project.Models;
+using System.Threading.Tasks;
 
 namespace Web_Project.Models.Interfaces
 {
     public interface IBookService
     {
-        IEnumerable<Book> GetAllBooks();
-        Book GetBookById(int id);
-        void AddBook(Book book);
-        void UpdateBook(Book book);
-        void DeleteBook(int id);
-        IEnumerable<Book> GetBooksByCategory(int categoryId);
-        IEnumerable<Book> SearchBooks(string keyword);
+        Task<IEnumerable<Book>> GetAllBooksAsync();
+        Task<Book> GetBookByIdAsync(int id);
+
+        Task<bool> AddBookAsync(Book book);
+        Task<bool> UpdateBookAsync(Book book);
+        Task<bool> DeleteBookAsync(int id);
+        Task<int> CountBooksAsync();
     }
 }
