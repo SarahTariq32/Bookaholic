@@ -299,7 +299,6 @@ using Web_Project.Models.Interfaces;
 
 namespace Web_Project.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
