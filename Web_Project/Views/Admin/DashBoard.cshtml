@@ -1,71 +1,94 @@
 ﻿@* @{
-    ViewData["Title"] = "Admin Dashboard";
+    Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"]</title>
-
+    <title>Admin Dashboard - Bookaholic</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- Custom Style -->
     <style>
         body {
-            background-color: #E5DCC5;
-            color: #2C2E43;
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
             margin: 0;
             padding: 0;
         }
 
-        .dashboard-header {
-            background-color: #F7F3E9;
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid rgba(44, 46, 67, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .admin-navbar {
+            background-color: #1F2937;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-            .dashboard-header h1 {
-                font-family: 'Cinzel', serif;
-                font-weight: 600;
-                color: #2C2E43;
-                margin: 0;
+            .admin-navbar .navbar-brand {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #C7A86B;
             }
 
+            .admin-navbar .nav-link {
+                color: white !important;
+                font-weight: 500;
+            }
+
+                .admin-navbar .nav-link:hover {
+                    color: #C7A86B !important;
+                }
+
         .logout-btn {
-            background-color: #2C2E43;
-            color: #FAF9F6;
-            font-weight: 600;
+            background-color: #C7A86B;
             border: none;
-            padding: 0.4rem 0.8rem;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1F2937;
             border-radius: 5px;
-            transition: 0.2s;
         }
 
             .logout-btn:hover {
-                background-color: #C7A86B;
-                color: #2C2E43;
+                background-color: #6B4F4F;
+                color: white;
+            }
+        .admin-sidebar {
+            background-color: #1F2937;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+        }
+
+            .admin-sidebar .sidebar-item {
+                color: white;
+                margin: 1rem 0;
+                text-decoration: none;
+                font-weight: 500;
+                display: block;
+                padding: 10px 20px;
+                border-radius: 6px;
             }
 
-        .dashboard-container {
+                .admin-sidebar .sidebar-item:hover,
+                .admin-sidebar .sidebar-item.active {
+                    background-color: #C7A86B;
+                    color: #1F2937;
+                }
+
+        .admin-main {
+            margin-left: 260px;
             padding: 2rem;
         }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
+        /* Dashboard Cards */
         .dashboard-card {
-            background-color: #FAF9F6;
+            background-color: white;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(44,46,67,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 1.5rem;
             text-align: center;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -73,140 +96,189 @@
 
             .dashboard-card:hover {
                 transform: translateY(-5px);
-                box-shadow: 0 6px 12px rgba(44,46,67,0.2);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
             }
 
             .dashboard-card h3 {
-                color: #2C2E43;
-                margin-bottom: 1rem;
-                font-family: 'Cinzel', serif;
+                color: #1F2937;
+                margin-bottom: 0.5rem;
+                font-size: 2rem;
+                font-weight: 600;
             }
 
             .dashboard-card p {
-                font-size: 0.95rem;
-                color: #2C2E43;
+                color: #6B7280;
                 margin-bottom: 1rem;
+                font-size: 0.95rem;
             }
 
-            .dashboard-card a.btn {
-                background-color: #2C2E43;
-                color: #FAF9F6;
-                font-weight: 600;
-                border: none;
+            .dashboard-card a {
+                color: white;
                 padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                background-color: #1F2937;
                 border-radius: 6px;
-                transition: 0.2s;
                 text-decoration: none;
+                font-weight: 500;
             }
 
-                .dashboard-card a.btn:hover {
-                    background-color: #C7A86B;
-                    color: #2C2E43;
+                .dashboard-card a:hover {
+                    background-color: #6B4F4F;
                 }
+
+        .admin-footer {
+            text-align: center;
+            color: #6B7280;
+            padding: 1rem 0;
+            background-color: #F3F4F6;
+        }
     </style>
 </head>
 <body>
-    <div class="dashboard-header">
-        <h1>Admin Dashboard</h1>
-        <form method="post" action="/Admin/Logout">
-            <button type="submit" class="logout-btn">Logout</button>
-        </form>
-    </div>
 
-    <div class="dashboard-container">
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <h3>Add / Edit Book</h3>
-                <p>Add new books or edit existing ones in your store.</p>
-                <a href="/Admin/AddEditBook" class="btn">Go</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Manage Categories</h3>
-                <p>Create, edit, or remove categories for your books.</p>
-                <a href="/Admin/ManageCategories" class="btn">Go</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Manage Orders</h3>
-                <p>View and update customer orders quickly.</p>
-                <a href="/Admin/ManageOrders" class="btn">Go</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Reports</h3>
-                <p>Check sales, revenue, and performance reports.</p>
-                <a href="/Admin/Reports" class="btn">Go</a>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Settings</h3>
-                <p>Update store preferences and settings.</p>
-                <a href="/Admin/Settings" class="btn">Go</a>
-            </div>
+    <nav class="navbar admin-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/Admin/Dashboard">Bookaholic Admin</a>
+            <form asp-controller="Admin" asp-action="Logout" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
         </div>
+    </nav>
+
+    <div class="admin-sidebar">
+        <a href="/Admin/Dashboard" class="sidebar-item active">Dashboard</a>
+        <a href="/Admin/ManageBooks" class="sidebar-item">Manage Books</a>
+        <a href="/Admin/ManageCategories" class="sidebar-item">Manage Categories</a>
+        <a href="/Admin/ManageOrders" class="sidebar-item">Manage Orders</a>
+        <a href="/Admin/Reports" class="sidebar-item">Reports</a>
     </div>
-</body>
-</html> *@
-@model dynamic
-@{
-    ViewData["Title"] = "Admin Dashboard";
-}
 
-<div class="container mt-5">
+    <!-- Main Content -->
+    <div class="admin-main">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome back! Here's an overview of your store's activity.</p>
 
-    <h2 class="text-center mb-4" style="color:#ff4d79;">Admin Dashboard</h2>
-
-    <div class="row">
-
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0" style="background:#2a2a2a;color:white;">
-                <div class="card-body text-center">
+        <!-- Dynamic Info Section -->
+        <div class="row g-4">
+            <!-- Total Books -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="dashboard-card">
                     <h3>@Model.TotalBooks</h3>
                     <p>Total Books</p>
-                    <a href="/Admin/ManageBooks" class="btn btn-pink">Manage Books</a>
+                    <a href="/Admin/ManageBooks">Manage Books</a>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0" style="background:#2a2a2a;color:white;">
-                <div class="card-body text-center">
+            <!-- Total Orders -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="dashboard-card">
                     <h3>@Model.TotalOrders</h3>
                     <p>Total Orders</p>
-                    <a href="/Admin/ManageOrders" class="btn btn-pink">View Orders</a>
+                    <a href="/Admin/ManageOrders">View Orders</a>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0" style="background:#2a2a2a;color:white;">
-                <div class="card-body text-center">
+            <!-- Delivered Orders -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="dashboard-card">
                     <h3>@Model.Delivered</h3>
-                    <p>Delivered</p>
+                    <p>Delivered Orders</p>
                 </div>
             </div>
+
+            @* <!-- Sales Reports -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="dashboard-card">
+                    <h3>@Model.SalesReports</h3>
+                    <p>Sales Reports</p>
+                    <a href="/Admin/Reports">View Reports</a>
+                </div>
+            </div> 
         </div>
-
     </div>
 
-    <div class="text-center mt-4">
-        <a href="/Admin/ManageCategories" class="btn btn-pink me-2">Manage Categories</a>
-        <a href="/Admin/ManageBooks" class="btn btn-pink me-2">Manage Books</a>
-        <a href="/Admin/ManageOrders" class="btn btn-pink">Manage Orders</a>
-    </div>
+    <!-- Footer -->
+    <footer class="admin-footer">
+        &copy; 2025 Bookaholic Admin. All rights reserved.
+    </footer>
+</body>
+</html> *@
 
-</div>
+@model dynamic
+
+@{
+    Layout = "_adminLayout";
+}
 
 <style>
-    .btn-pink {
-        background-color: #ff4d79;
-        color: white;
-        border-radius: 8px;
+    /* Dashboard-specific styles (kept local) */
+    .dashboard-card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-        .btn-pink:hover {
-            background-color: #ff2d67;
-            color: white;
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
+
+        .dashboard-card h3 {
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .dashboard-card p {
+            color: #6B7280;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .dashboard-card a {
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            background-color: #1F2937;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .dashboard-card a:hover {
+                background-color: #6B4F4F;
+            }
 </style>
+
+<h2 class="mb-4">Admin Dashboard</h2>
+<p class="mb-4">Welcome back! Here's an overview of your store's activity.</p>
+
+<div class="row g-4">
+    <div class="col-lg-3 col-sm-6">
+        <div class="dashboard-card">
+            <h3>@(Model?.TotalBooks ?? "0")</h3>
+            <p>Total Books</p>
+            <a href="/Admin/ManageBooks">Manage Books</a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-sm-6">
+        <div class="dashboard-card">
+            <h3>@(Model?.TotalOrders ?? "0")</h3>
+            <p>Total Orders</p>
+            <a href="/Admin/ManageOrders">View Orders</a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-sm-6">
+        <div class="dashboard-card">
+            <h3>@(Model?.Delivered ?? "0")</h3>
+            <p>Delivered Orders</p>
+        </div>
+    </div>
+</div>

@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Web_Project.Areas.Identity.Pages.Account
 {
@@ -140,6 +141,56 @@ namespace Web_Project.Areas.Identity.Pages.Account
         //    // If we got this far, something failed, redisplay form
         //    return Page();
         //}
+        //public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        //{
+        //    returnUrl ??= Url.Content("~/"); // default to home page
+
+        //    ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+        //        if (result.Succeeded)
+        //        {
+        //            //_logger.LogInformation("User logged in.");
+
+        //            //// Avoid redirecting to login page itself
+        //            //if (string.IsNullOrEmpty(returnUrl) || returnUrl.Contains("/Account/Login"))
+        //            //    return LocalRedirect("~/"); // redirect to home page
+
+        //            //return LocalRedirect(returnUrl);
+        //            _logger.LogInformation("User logged in.");
+
+        //            var user = await _userManager.FindByEmailAsync(Input.Email);
+
+        //            if (user != null && await _userManager.IsInRoleAsync(user, "Admin"))
+        //            {
+        //                return RedirectToAction("Dashboard", "Admin");
+        //            }
+
+        //            if (string.IsNullOrEmpty(returnUrl) || returnUrl.Contains("/Account/Login"))
+        //                return LocalRedirect("~/");
+
+        //            return LocalRedirect(returnUrl);
+        //        }
+        //        if (result.RequiresTwoFactor)
+        //        {
+        //            return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+        //        }
+        //        if (result.IsLockedOut)
+        //        {
+        //            _logger.LogWarning("User account locked out.");
+        //            return RedirectToPage("./Lockout");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        //            return Page();
+        //        }
+        //    }
+
+        //    return Page();
+        //}
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/"); // default to home page
@@ -149,30 +200,52 @@ namespace Web_Project.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
 
-                    // Avoid redirecting to login page itself
+                    // Find the user
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        // Create claims for this user
+                        var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    // Example: mark admin based on email containing "admin"
+                    new Claim("Admin", Input.Email.Contains("admin") ? "true" : "false")
+                };
+
+                        var identity = new ClaimsIdentity(claims, "login");
+                        var principal = new ClaimsPrincipal(identity);
+
+                        await HttpContext.SignInAsync(principal);
+                    }
+
+                    // Redirect based on claim
+                    var isAdmin = User.Claims.FirstOrDefault(c => c.Type == "Admin" && c.Value == "true") != null;
+
+                    if (isAdmin)
+                        return LocalRedirect("/Admin/Dashboard");
+
                     if (string.IsNullOrEmpty(returnUrl) || returnUrl.Contains("/Account/Login"))
-                        return LocalRedirect("~/"); // redirect to home page
+                        return LocalRedirect("~/");
 
                     return LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
-                {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return Page();
             }
 
             return Page();

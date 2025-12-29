@@ -12,7 +12,9 @@
             public string Status { get; set; }
             public List<OrderDetail> OrderDetails { get; set; }
 
-        }
+            public string? PaymentMethod { get; set; }
+
+    }
     }
 
 

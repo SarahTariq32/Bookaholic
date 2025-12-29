@@ -407,7 +407,7 @@
 
 </div> *@
 
-@model Web_Project.Controllers.HomePageViewModel
+@* @model Web_Project.Controllers.HomePageViewModel
 
 @{
     ViewData["Title"] = "Home";
@@ -604,6 +604,883 @@
 
 </div>
 <div id="searchResults" style="display:none;"></div>
+ *@
 
+@* @model Web_Project.Controllers.HomePageViewModel
 
+@{
+    ViewData["Title"] = "Home";
+}
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+    <style>
+        /* Featured horizontal categories */
+        .featured-categories-wrapper {
+            margin: 1.5rem 0;
+        }
+
+        .featured-categories {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+            .featured-categories::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .featured-categories::-webkit-scrollbar-thumb {
+                background: rgba(0,0,0,0.15);
+                border-radius: 4px;
+            }
+
+        .category-card {
+            display: block;
+            min-width: 220px;
+            flex: 0 0 auto;
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            padding: 0.5rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .category-card img {
+                width: 100%;
+                height: 140px;
+                object-fit: cover;
+                border-radius: 6px;
+            }
+
+            .category-card p {
+                margin: 0.5rem 0 0;
+                font-weight: 600;
+            }
+
+        /* Keep existing layout styles for the rest of the page */
+        #mainSlider .carousel-item img {
+            width: 100%;
+            height: 420px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+}
+
+<div id="indexPage">
+
+    <!-- Hardcoded main slider (kept as-is) -->
+    <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active"><img src="~/images/fantasy.PNG" alt="Fantasy"></div>
+            <div class="carousel-item"><img src="~/images/romance.PNG" alt="Romance"></div>
+            <div class="carousel-item"><img src="~/images/islam.PNG" alt="Islamic"></div>
+            <div class="carousel-item"><img src="~/images/horror.PNG" alt="Horror"></div>
+            <div class="carousel-item"><img src="~/images/children.PNG" alt="Children"></div>
+            <div class="carousel-item"><img src="~/images/finance.PNG" alt="Finance"></div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainSlider" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- Featured categories (4 cards) - horizontal scroll -->
+    <section class="featured-categories-wrapper">
+        <h2 class="mt-4">Featured Categories</h2>
+        <div class="featured-categories" role="list">
+            <!-- Fiction: Fantasy (CategoryID = 1) -->
+            <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="1" class="category-card" role="listitem" aria-label="Fantasy category">
+                <img src="~/images/fantasycat.JPG" alt="Fantasy category image" />
+                <p>Fantasy</p>
+            </a>
+
+            <!-- Fiction: Thriller (CategoryID = 2) -->
+            <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="2" class="category-card" role="listitem" aria-label="Thriller category">
+                <img src="~/images/thrillercat.JPG" alt="Thriller category image" />
+                <p>Thriller</p>
+            </a>
+
+            <!-- Non‑fiction: Islamic (CategoryID = 6) -->
+            <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="6" class="category-card" role="listitem" aria-label="Islamic category">
+                <img src="~/images/islamcat.JPG" alt="Islamic category image" />
+                <p>Islamic</p>
+            </a>
+
+            <!-- Non‑fiction: History (CategoryID = 8) -->
+            <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="8" class="category-card" role="listitem" aria-label="History category">
+                <img src="~/images/historycat.JPG" alt="History category image" />
+                <p>History</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Rest of homepage sections (kept dynamic where helpful) -->
+    <section class="book-section">
+        <h3>Fantasy Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Fantasy"))
+            {
+                foreach (var book in Model.BooksByCategory["Fantasy"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title">
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="1" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Thriller Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Thriller"))
+            {
+                foreach (var book in Model.BooksByCategory["Thriller"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title">
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="2" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Islamic Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Islamic"))
+            {
+                foreach (var book in Model.BooksByCategory["Islamic"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title">
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="6" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>History Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("History"))
+            {
+                foreach (var book in Model.BooksByCategory["History"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title">
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="8" class="see-more">See More</a>
+    </section>
+
+</div>
+
+<div id="searchResults" style="display:none;"></div> *@
+
+@* @model Web_Project.Controllers.HomePageViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+    <style>
+        :root {
+            --slider-height: calc(100vh - 70px);
+        }
+
+        /* ===== MAIN SLIDER - fills leftover viewport under navbar ===== */
+        #mainSlider {
+            width: 100%;
+            overflow: hidden;
+        }
+
+            #mainSlider .carousel-inner,
+            #mainSlider .carousel-item {
+                height: var(--slider-height);
+            }
+
+                #mainSlider .carousel-item img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
+
+        /* ===== Categories: horizontal scroll (cards) ===== */
+        .categories-section {
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+            .categories-section h2 {
+                margin-bottom: .5rem;
+            }
+
+        .categories-scroll-wrapper {
+            position: relative;
+        }
+
+        .categories-container {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.75rem 0;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+
+            .categories-container::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .categories-container::-webkit-scrollbar-thumb {
+                background: rgba(0,0,0,0.12);
+                border-radius: 4px;
+            }
+
+        .category-card {
+            scroll-snap-align: start;
+            flex: 0 0 180px;
+            min-width: 180px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .category-card img {
+                width: 100%;
+                height: 110px;
+                object-fit: cover;
+                display: block;
+            }
+
+            .category-card p {
+                margin: 0.5rem 0 0;
+                font-weight: 600;
+            }
+
+        /* scroll buttons */
+        .cat-scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(31,41,55,0.9);
+            color: #fff;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+            .cat-scroll-btn:hover {
+                background: rgba(31,41,55,1);
+            }
+
+        .cat-prev {
+            left: -10px;
+        }
+
+        .cat-next {
+            right: -10px;
+        }
+
+        /* ===== Book grid (keeps original vibe) ===== */
+        .book-section {
+            margin: 2rem 0;
+        }
+
+        .books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .book-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+            .book-card img {
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                display: block;
+            }
+
+        .book-info {
+            padding: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .book-title {
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .book-price {
+            color: #c7a86b;
+            font-weight: 700;
+        }
+
+        .see-more {
+            display: inline-block;
+            margin-top: 0.75rem;
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+}
+
+<div id="indexPage">
+
+    <!-- Main slider: will be sized below navbar via JS -->
+    <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active"><img src="~/images/fantasy.PNG" alt="Fantasy"></div>
+            <div class="carousel-item"><img src="~/images/romance.PNG" alt="Romance"></div>
+            <div class="carousel-item"><img src="~/images/islam.PNG" alt="Islamic"></div>
+            <div class="carousel-item"><img src="~/images/horror.PNG" alt="Horror"></div>
+            <div class="carousel-item"><img src="~/images/children.PNG" alt="Children"></div>
+            <div class="carousel-item"><img src="~/images/finance.PNG" alt="Finance"></div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainSlider" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Categories: horizontal scroll with prev/next controls -->
+    <section class="categories-section">
+        <h2>Shop by Categories</h2>
+        <hr />
+        <div class="categories-scroll-wrapper">
+            <button class="cat-scroll-btn cat-prev" id="catPrev" aria-label="Scroll categories left">‹</button>
+            <div class="categories-container" id="categoriesContainer" role="list">
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="1" class="category-card" role="listitem">
+                    <img src="~/images/fantasycat.JPG" alt="Fantasy" /><p>Fantasy</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="2" class="category-card" role="listitem">
+                    <img src="~/images/thrillercat.JPG" alt="Thriller" /><p>Thriller</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="3" class="category-card" role="listitem">
+                    <img src="~/images/islamcat.JPG" alt="Islamic" /><p>Islamic</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="4" class="category-card" role="listitem">
+                    <img src="~/images/horrorcat.JPG" alt="Horror" /><p>Horror</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="5" class="category-card" role="listitem">
+                    <img src="~/images/selfcat.JPG" alt="Self Help" /><p>Self Help</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="6" class="category-card" role="listitem">
+                    <img src="~/images/urducat.JPG" alt="Urdu" /><p>Urdu</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="7" class="category-card" role="listitem">
+                    <img src="~/images/romancecat.JPG" alt="Romance" /><p>Romance</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="8" class="category-card" role="listitem">
+                    <img src="~/images/mysterycat.JPG" alt="Mystery" /><p>Mystery</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="9" class="category-card" role="listitem">
+                    <img src="~/images/leadcat.JPG" alt="Leadership" /><p>Leadership</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="10" class="category-card" role="listitem">
+                    <img src="~/images/historycat.JPG" alt="History" /><p>History</p>
+                </a>
+                <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="11" class="category-card" role="listitem">
+                    <img src="~/images/biocat.JPG" alt="Biography" /><p>Biography</p>
+                </a>
+            </div>
+            <button class="cat-scroll-btn cat-next" id="catNext" aria-label="Scroll categories right">›</button>
+        </div>
+    </section>
+
+    <!-- Book sections (dynamic, preserved) -->
+    <section class="book-section">
+        <h3>Fantasy Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Fantasy"))
+            {
+                foreach (var book in Model.BooksByCategory["Fantasy"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="1" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Thriller Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Thriller"))
+            {
+                foreach (var book in Model.BooksByCategory["Thriller"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="2" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Islamic Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Islamic"))
+            {
+                foreach (var book in Model.BooksByCategory["Islamic"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="6" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Horror Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Horror"))
+            {
+                foreach (var book in Model.BooksByCategory["Horror"])
+                {
+                    <div class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-categoryId="4" class="see-more">See More</a>
+    </section>
+
+</div>
+
+<div id="searchResults" style="display:none;"></div>
+
+@section Scripts {
+    <script>
+        // compute slider height to fill viewport under navbar
+        function updateSliderHeight() {
+            var nav = document.querySelector('.navbar') || document.querySelector('nav');
+            var navHeight = nav ? Math.ceil(nav.getBoundingClientRect().height) : 70;
+            var vh = window.innerHeight;
+            document.documentElement.style.setProperty('--slider-height', (vh - navHeight) + 'px');
+        }
+        window.addEventListener('load', updateSliderHeight);
+        window.addEventListener('resize', updateSliderHeight);
+
+        // category scroll controls
+        (function () {
+            var container = document.getElementById('categoriesContainer');
+            var prev = document.getElementById('catPrev');
+            var next = document.getElementById('catNext');
+            if (!container) return;
+
+            function scrollByAmount(amount) {
+                container.scrollBy({ left: amount, behavior: 'smooth' });
+            }
+
+            prev?.addEventListener('click', function () {
+                scrollByAmount(-Math.round(container.clientWidth * 0.7));
+            });
+            next?.addEventListener('click', function () {
+                scrollByAmount(Math.round(container.clientWidth * 0.7));
+            });
+        })();
+    </script>
+} *@
+
+@model Web_Project.Controllers.HomePageViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+    <style>
+        :root {
+            --slider-height: calc(100vh - 70px);
+        }
+
+        /* slider */
+        #mainSlider {
+            width: 100%;
+            overflow: hidden;
+        }
+
+            #mainSlider .carousel-inner,
+            #mainSlider .carousel-item {
+                height: var(--slider-height);
+            }
+
+                #mainSlider .carousel-item img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
+                }
+
+        /* categories horizontal */
+        .categories-section {
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .categories-container {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.75rem 0;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+
+            .categories-container::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .categories-container::-webkit-scrollbar-thumb {
+                background: rgba(0,0,0,0.12);
+                border-radius: 4px;
+            }
+
+        .category-card {
+            scroll-snap-align: start;
+            flex: 0 0 180px;
+            min-width: 180px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .category-card img {
+                width: 100%;
+                height: 110px;
+                object-fit: cover;
+                display: block;
+            }
+
+            .category-card p {
+                margin: 0.5rem 0 0;
+                font-weight: 600;
+            }
+
+        /* book grid */
+        .book-section {
+            margin: 2rem 0;
+        }
+
+        .books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .book-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+            .book-card img {
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                display: block;
+            }
+
+        .book-info {
+            padding: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .book-title {
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .book-price {
+            color: #c7a86b;
+            font-weight: 700;
+        }
+
+        .see-more {
+            display: inline-block;
+            margin-top: 0.75rem;
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+}
+
+ <div id="indexPage"> 
+
+    <!-- Main slider -->
+    <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active"><img src="~/images/fantasy.PNG" alt="Fantasy"></div>
+            <div class="carousel-item"><img src="~/images/romance.PNG" alt="Romance"></div>
+            <div class="carousel-item"><img src="~/images/islam.PNG" alt="Islamic"></div>
+            <div class="carousel-item"><img src="~/images/horror.PNG" alt="Horror"></div>
+            <div class="carousel-item"><img src="~/images/children.PNG" alt="Children"></div>
+            <div class="carousel-item"><img src="~/images/finance.PNG" alt="Finance"></div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainSlider" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Categories (horizontal) - link by category NAME to BooksController.Index -->
+    <section class="categories-section">
+        <h2>Shop by Categories</h2>
+        <hr />
+        <div class="categories-container" role="list">
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="Fantasy" class="category-card" role="listitem">
+                <img src="~/images/fantasycat.JPG" alt="Fantasy" /><p>Fantasy</p>
+            </a>
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="Thriller" class="category-card" role="listitem">
+                <img src="~/images/thrillercat.JPG" alt="Thriller" /><p>Thriller</p>
+            </a>
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="Islamic" class="category-card" role="listitem">
+                <img src="~/images/islamcat.JPG" alt="Islamic" /><p>Islamic</p>
+            </a>
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="Horror" class="category-card" role="listitem">
+                <img src="~/images/horrorcat.JPG" alt="Horror" /><p>Horror</p>
+            </a>
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="Self-Help" class="category-card" role="listitem">
+                <img src="~/images/selfcat.JPG" alt="Self Help" /><p>Self Help</p>
+            </a>
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="Urdu" class="category-card" role="listitem">
+                <img src="~/images/urducat.JPG" alt="Urdu" /><p>Urdu</p>
+            </a>
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="Romance" class="category-card" role="listitem">
+                <img src="~/images/romancecat.JPG" alt="Romance" /><p>Romance</p>
+            </a>
+            <a asp-controller="Books" asp-action="BookList" asp-route-category="History" class="category-card" role="listitem">
+                <img src="~/images/historycat.JPG" alt="History" /><p>History</p>
+            </a>
+            
+        </div>
+    </section>
+
+    <!-- Book sections: each book card links to BooksController.Details?id=... -->
+    <section class="book-section">
+        <h3>Fantasy Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Fantasy"))
+            {
+                foreach (var book in Model.BooksByCategory["Fantasy"])
+                {
+                    <a asp-controller="Books" asp-action="BookDetails" asp-route-id="@book.BookID" class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-category="Fantasy" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Thriller Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Thriller"))
+            {
+                foreach (var book in Model.BooksByCategory["Thriller"])
+                {
+                    <a asp-controller="Books" asp-action="BookDetails" asp-route-id="@book.BookID" class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-category="Thriller" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Islamic Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Islamic"))
+            {
+                foreach (var book in Model.BooksByCategory["Islamic"])
+                {
+                    <a asp-controller="Books" asp-action="BookDetails" asp-route-id="@book.BookID" class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-category="Islamic" class="see-more">See More</a>
+    </section>
+
+    <section class="book-section">
+        <h3>Horror Books</h3>
+        <hr />
+        <div class="books-container">
+            @if (Model?.BooksByCategory != null && Model.BooksByCategory.ContainsKey("Horror"))
+            {
+                foreach (var book in Model.BooksByCategory["Horror"])
+                {
+                    <a asp-controller="Books" asp-action="BookDetails" asp-route-id="@book.BookID" class="book-card">
+                        <img src="@book.CoverImage" alt="@book.Title" />
+                        <div class="book-info">
+                            <p class="book-title">@book.Title</p>
+                            <span class="book-price">PKR @book.Price</span>
+                        </div>
+                                                                    
+                    </a>
+                }
+            }
+        </div>
+        <a asp-controller="Books" asp-action="BookList" asp-route-category="Horror" class="see-more">See More</a>
+    </section>
+
+ </div> 
+
+@section Scripts {
+    <script>
+        // adjust slider height
+        function updateSliderHeight() {
+            var nav = document.querySelector('.navbar') || document.querySelector('nav');
+            var navHeight = nav ? Math.ceil(nav.getBoundingClientRect().height) : 70;
+            document.documentElement.style.setProperty('--slider-height', (window.innerHeight - navHeight) + 'px');
+        }
+        window.addEventListener('load', updateSliderHeight);
+        window.addEventListener('resize', updateSliderHeight);
+
+        // simple horizontal scroll by card width
+        (function () {
+            var container = document.querySelector('.categories-container');
+            var scrollAmount = 360; // adjust as desired
+            if (!container) return;
+            // allow wheel to scroll horizontally on desktop
+            container.addEventListener('wheel', function (e) {
+                if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+                    e.preventDefault();
+                    container.scrollBy({ left: e.deltaY, behavior: 'smooth' });
+                }
+            }, { passive: false });
+        })();
+    </script>
+}

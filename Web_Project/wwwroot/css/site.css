@@ -271,3 +271,98 @@ button {
     position: relative; 
     padding-left: 30px; 
 }
+
+
+
+
+
+/* Add book grid / card rules to ensure images are visible and well sized */
+/*.book-grid .book-card img,
+.book-card img,
+.card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.book-card .card-body {
+    min-height: 110px;
+}*/
+
+/* small responsive tweak */
+/*@media (max-width: 576px) {
+    .book-card img {
+        height: 180px;
+    }
+}*/
+
+/* Book list — light cards on the grid (override global .card dark theme) */
+.book-grid .book-card,
+.book-grid .card.book-card {
+    background: #ffffff;
+    color: #2C2E43;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(44,46,67,0.08);
+    overflow: hidden;
+    transition: transform .18s ease, box-shadow .18s ease;
+    border: 0;
+}
+
+    .book-grid .book-card:hover,
+    .book-grid .card.book-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(44,46,67,0.12);
+    }
+
+    .book-grid .book-card img,
+    .book-grid .card.book-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .book-grid .book-card .card-body,
+    .book-grid .card.book-card .card-body {
+        padding: .75rem;
+        min-height: 110px;
+    }
+
+/* Pagination — subtle boxed pills, centered and consistent */
+.pagination-custom {
+    display: flex;
+    gap: .3rem;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    margin: 1.25rem 0 0;
+    list-style: none;
+}
+
+    .pagination-custom .page-item .page-link {
+        color: #2C2E43;
+        background: #fff;
+        border: 1px solid #e9e9e9;
+        padding: .45rem .78rem;
+        border-radius: .5rem;
+        transition: background .15s, border-color .15s, box-shadow .15s;
+    }
+
+    .pagination-custom .page-item.active .page-link {
+        color: #ffffff;
+        background: #C7A86B;
+        border-color: #C7A86B;
+        box-shadow: 0 8px 18px rgba(199,168,107,0.12);
+    }
+
+    .pagination-custom .page-item.disabled .page-link {
+        color: #9aa0a6;
+        background: #f8f9fa;
+        border-color: #ececec;
+    }
+
+    .pagination-custom .page-link:hover {
+        text-decoration: none;
+        box-shadow: 0 6px 12px rgba(44,46,67,0.06);
+    }

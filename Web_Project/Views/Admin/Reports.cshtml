@@ -1,61 +1,509 @@
-﻿
+﻿@* 
+@model Web_Project.Models.ViewModels.ReportsVM
+
 @{
-    ViewData["Title"] = "Reports";
+    Layout = null;
 }
 
-<h2>@ViewData["Title"]</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reports - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+        }
 
-<div class="reports-container">
-    <div class="report-card">
-        <h3>Total Orders</h3>
-        <p>125</p>
+        /* .admin-navbar {
+            background-color: #1F2937;
+            color: white;
+        }
+
+            .admin-navbar a.navbar-brand {
+                color: #C7A86B;
+                font-weight: 700;
+            } */
+        .admin-navbar {
+            background-color: #1F2937;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .admin-navbar .navbar-brand {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #C7A86B;
+            }
+
+            .admin-navbar .nav-link {
+                color: white !important;
+                font-weight: 500;
+            }
+
+                .admin-navbar .nav-link:hover {
+                    color: #C7A86B !important;
+                }
+
+        .logout-btn {
+            background-color: #C7A86B;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1F2937;
+            border-radius: 5px;
+        }
+
+            .logout-btn:hover {
+                background-color: #6B4F4F;
+                color: white;
+            }
+
+        .admin-sidebar {
+            background-color: #1F2937;
+            min-height: 100vh;
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+        }
+
+            .admin-sidebar .sidebar-item {
+                color: white;
+                display: block;
+                margin-bottom: 1rem;
+                padding: 0.75rem;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 500;
+            }
+
+                .admin-sidebar .sidebar-item.active, .admin-sidebar .sidebar-item:hover {
+                    background-color: #C7A86B;
+                    color: #1F2937;
+                }
+
+        .admin-main {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        .card-stat {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #C7A86B;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar admin-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/Admin/Dashboard">Bookaholic Admin</a>
+            <form asp-controller="Admin" asp-action="Logout" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <aside class="admin-sidebar">
+        <a href="/Admin/Dashboard" class="sidebar-item">Dashboard</a>
+        <a href="/Admin/ManageBooks" class="sidebar-item">Manage Books</a>
+        <a href="/Admin/ManageCategories" class="sidebar-item">Manage Categories</a>
+        <a href="/Admin/ManageOrders" class="sidebar-item">Manage Orders</a>
+        <a href="/Admin/Reports" class="sidebar-item active">Reports</a>
+    </aside>
+
+    <main class="admin-main">
+        <h2 class="mb-4">Reports</h2>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card-stat">
+                    <h5>Total Orders</h5>
+                    <div class="stat-value">@Model?.TotalOrders ?? 0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-stat">
+                    <h5>Total Revenue (PKR)</h5>
+                    <div class="stat-value">@((Model?.TotalRevenue ?? 0m).ToString("C"))</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-stat">
+                    <h5>Total Customers</h5>
+                    <div class="stat-value">@Model?.TotalCustomers ?? 0</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> *@
+
+@* @model Web_Project.Models.ViewModels.ReportsVM
+@using System.Text.Json
+
+@{
+    Layout = "_adminLayout";
+}
+
+<h2 class="mb-4">Reports</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card-stat">
+            <h5>Total Orders</h5>
+            <div class="stat-value">@Model?.TotalOrders ?? 0</div>
+        </div>
     </div>
-    <div class="report-card">
-        <h3>Total Revenue (PKR)</h3>
-        <p>1,250,000</p>
+    <div class="col-md-4">
+        <div class="card-stat">
+            <h5>Total Revenue (PKR)</h5>
+            <div class="stat-value">@((Model?.TotalRevenue ?? 0m).ToString("C"))</div>
+        </div>
     </div>
-    <div class="report-card">
-        <h3>Total Customers</h3>
-        <p>78</p>
+    <div class="col-md-4">
+        <div class="card-stat">
+            <h5>Total Customers</h5>
+            <div class="stat-value">@Model?.TotalCustomers ?? 0</div>
+        </div>
     </div>
 </div>
 
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: #E5DCC5;
-        color: #2C2E43;
-        padding: 2rem;
+<div class="row">
+    <div class="col-12">
+        <div class="card-stat mb-3">
+            <h5 class="mb-3">Revenue (Last 12 Months)</h5>
+            <div class="table-responsive mb-3">
+                <canvas id="revenueChart" height="140"></canvas>
+            </div>
+            <small class="text-muted">Monthly revenue trend</small>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script>
+        (function () {
+            const labels = @Html.Raw(JsonSerializer.Serialize(Model.RevenueLabels ?? new List<string>()));
+            const revenue = @Html.Raw(JsonSerializer.Serialize(Model.RevenueValues ?? new List<decimal>()));
+            const orders = @Html.Raw(JsonSerializer.Serialize(Model.OrdersPerMonth ?? new List<int>()));
+
+            const ctx = document.getElementById('revenueChart');
+            if (!ctx) return;
+
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Revenue (PKR)',
+                        data: revenue,
+                        borderColor: '#C7A86B',
+                        backgroundColor: 'rgba(199,168,107,0.12)',
+                        yAxisID: 'y',
+                        tension: 0.25,
+                        pointRadius: 3,
+                        fill: true
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Orders',
+                        data: orders,
+                        backgroundColor: '#6B4F4F',
+                        yAxisID: 'y1',
+                        borderRadius: 4
+                    }
+                ]
+            };
+
+            const config = {
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            ticks: {
+                                callback: function (value) { return value.toLocaleString(); }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Revenue (PKR)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: 'Orders' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function (ctx) {
+                                    if (ctx.dataset.type === 'line') return ctx.dataset.label + ': PKR ' + Number(ctx.raw).toLocaleString();
+                                    return ctx.dataset.label + ': ' + ctx.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // create chart (destroy existing if present)
+            if (ctx._chartInstance) {
+                ctx._chartInstance.destroy();
+            }
+            ctx._chartInstance = new Chart(ctx.getContext('2d'), config);
+        })();
+    </script>
+} *@
+
+@model Web_Project.Models.ViewModels.ReportsVM
+@using System.Text.Json
+
+@{
+    Layout = "_adminLayout";
+}
+
+<section class="mb-4">
+    <h2 class="mb-3">Reports</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
     }
-
-    h2 {
-        font-family: 'Cinzel', serif;
-        margin-bottom: 1.5rem;
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
     }
+</section>
 
-    .reports-container {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-    }
+<!-- Summary cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-md-4">
+        <div class="card p-3 shadow-sm h-100">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16"><path d="M10.854 6.146a.5.5 0 0 0-.708.708L10.293 7.5 9.854 8l-1.5-1.5a.5.5 0 0 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l1.5-1.5a.5.5 0 0 0 0-.708z" /><path d="M14 4.5V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4.5H14zM2 3.5A1.5 1.5 0 0 1 3.5 2h9A1.5 1.5 0 0 1 14 3.5v.5H2v-.5z" /></svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-muted small">Total Orders</div>
+                    <div class="h4 mb-0">@((Model?.TotalOrders ?? 0).ToString("N0"))</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    .report-card {
-        flex: 1 1 200px;
-        background: #FAF9F6;
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(44,46,67,0.1);
-        text-align: center;
-    }
+    <div class="col-sm-6 col-md-4">
+        <div class="card p-3 shadow-sm h-100">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16"><path d="M8.5 1a.5.5 0 0 0-1 0v.106A2.5 2.5 0 0 0 6 3.5 2.5 2.5 0 0 0 8.5 6H9v1h-.5A2.5 2.5 0 0 0 6 9.5 2.5 2.5 0 0 0 8.5 12H9v1.5a.5.5 0 0 0 1 0V12h.5a.5.5 0 0 0 0-1H10v-1h.5A2.5 2.5 0 0 0 13 7.5 2.5 2.5 0 0 0 10.5 5H10V4h.5A2.5 2.5 0 0 0 13 1.5 2.5 2.5 0 0 0 10.5-.5H9V0h-.5A.5.5 0 0 0 8 0H7.5z" /></svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-muted small">Total Revenue</div>
+                    <div class="h4 mb-0">@((Model?.TotalRevenue ?? 0m).ToString("C"))</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        .report-card h3 {
-            margin-bottom: 0.5rem;
-            color: #2C2E43;
-        }
+    <div class="col-sm-6 col-md-4">
+        <div class="card p-3 shadow-sm h-100">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16"><path d="M13 14s-1 0-1-1 1-4 4-4 4 4 4 4-1 0-1 1H13zm-11 0s-1 0-1-1 1-4 4-4 4 4 4 4-1 0-1 1H2z" /></svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-muted small">Total Customers</div>
+                    <div class="h4 mb-0">@((Model?.TotalCustomers ?? 0).ToString("N0"))</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        .report-card p {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #C7A86B;
-        }
-</style>
+<!-- Charts -->
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <div class="card p-3 shadow-sm" style="height:420px;">
+            <h5 class="mb-3">Monthly (last 12 months)</h5>
+            <div class="h-100 d-flex align-items-stretch">
+                <canvas id="monthlyChart" style="flex:1 1 auto; width:100%;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card p-3 shadow-sm" style="height:420px;">
+            <h5 class="mb-3">Last 30 Days</h5>
+            <div class="h-100 d-flex align-items-stretch">
+                <canvas id="dailyChart" style="flex:1 1 auto; width:100%;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script>
+        (function () {
+            const monthlyLabels = @Html.Raw(JsonSerializer.Serialize(Model.RevenueLabels ?? new List<string>()));
+            const monthlyRevenue = @Html.Raw(JsonSerializer.Serialize(Model.RevenueValues ?? new List<decimal>()));
+            const monthlyOrders = @Html.Raw(JsonSerializer.Serialize(Model.OrdersPerMonth ?? new List<int>()));
+
+            const dailyLabels = @Html.Raw(JsonSerializer.Serialize(Model.DailyLabels ?? new List<string>()));
+            const dailyRevenue = @Html.Raw(JsonSerializer.Serialize(Model.DailyRevenue ?? new List<decimal>()));
+            const dailyOrders = @Html.Raw(JsonSerializer.Serialize(Model.DailyOrders ?? new List<int>()));
+
+            // Monthly combined chart
+            const mCtx = document.getElementById('monthlyChart')?.getContext('2d');
+            if (mCtx) {
+                if (mCtx._chartInstance) mCtx._chartInstance.destroy();
+                mCtx._chartInstance = new Chart(mCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: monthlyLabels,
+                        datasets: [
+                            {
+                                type: 'bar',
+                                label: 'Orders',
+                                data: monthlyOrders,
+                                backgroundColor: 'rgba(107,79,79,0.9)',
+                                yAxisID: 'yOrders',
+                                borderRadius: 6
+                            },
+                            {
+                                type: 'line',
+                                label: 'Revenue (PKR)',
+                                data: monthlyRevenue,
+                                borderColor: '#C7A86B',
+                                backgroundColor: 'rgba(199,168,107,0.12)',
+                                yAxisID: 'yRevenue',
+                                tension: 0.25,
+                                pointRadius: 3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: { mode: 'index', intersect: false },
+                        scales: {
+                            yRevenue: {
+                                type: 'linear',
+                                position: 'left',
+                                ticks: { callback: v => Number(v).toLocaleString() }
+                            },
+                            yOrders: {
+                                type: 'linear',
+                                position: 'right',
+                                grid: { drawOnChartArea: false }
+                            }
+                        },
+                        plugins: { legend: { position: 'top' } }
+                    }
+                });
+            }
+
+            // Daily (last 30 days) chart
+            const dCtx = document.getElementById('dailyChart')?.getContext('2d');
+            if (dCtx) {
+                if (dCtx._chartInstance) dCtx._chartInstance.destroy();
+                dCtx._chartInstance = new Chart(dCtx, {
+                    data: {
+                        labels: dailyLabels,
+                        datasets: [
+                            {
+                                label: 'Revenue (PKR)',
+                                data: dailyRevenue,
+                                type: 'line',
+                                borderColor: '#C7A86B',
+                                backgroundColor: 'rgba(199,168,107,0.12)',
+                                tension: 0.2,
+                                pointRadius: 2,
+                                fill: true,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Orders',
+                                data: dailyOrders,
+                                type: 'bar',
+                                backgroundColor: 'rgba(107,79,79,0.85)',
+                                yAxisID: 'y1',
+                                borderRadius: 3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                position: 'left',
+                                ticks: { callback: v => Number(v).toLocaleString() }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                grid: { drawOnChartArea: false }
+                            }
+                        },
+                        plugins: { legend: { position: 'top' } }
+                    }
+                });
+            }
+        })();
+    </script>
+}

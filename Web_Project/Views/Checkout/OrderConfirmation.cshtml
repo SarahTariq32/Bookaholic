@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Order Confirmation";
     Layout = "_Layout";
 }
@@ -69,6 +69,51 @@
 
         <div class="order-actions">
             <a asp-controller="Home" asp-action="Index" class="btn btn-primary continue-shopping">Continue Shopping</a>
+        </div>
+    </section>
+</div> *@
+@model Web_Project.Models.ViewModels.OrderDetailsVM
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/orderConfirmation.css" asp-append-version="true" />
+}
+
+<div id="orderConfirmationPage" class="container my-5">
+    <section class="order-success text-center mb-4">
+        <h1>Order Placed Successfully! ✅</h1>
+        <p>Thank you, <strong>@Model.CustomerName</strong>. Your order #@Model.OrderId has been placed.</p>
+    </section>
+
+    <section class="order-details p-4 bg-white rounded shadow-sm">
+        <h4 class="mb-3">Order Summary</h4>
+
+        <div class="order-items mb-3">
+            @foreach (var item in Model.Items)
+            {
+                <div class="d-flex align-items-center mb-2">
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@item.BookTitle</div>
+                        <div class="small text-muted">PKR @item.Price.ToString("N0") × @item.Quantity</div>
+                    </div>
+                    <div class="fw-bold">PKR @(item.Price* item.Quantity)</div>
+                </div>
+            }
+        </div>
+
+        <div class="order-summary">
+            <p>Shipping: PKR @Model.ShippingFee.ToString("N0")</p>
+            <p class="total">Total: PKR @Model.TotalAmount.ToString("N0")</p>
+            <p>Estimated Delivery: @Model.EstimatedDelivery.ToString("dd MMM yyyy")</p>
+        </div>
+
+        <div class="order-actions mt-4">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary continue-shopping">Continue Shopping</a>
+            <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary ms-2">View Cart</a>
         </div>
     </section>
 </div>

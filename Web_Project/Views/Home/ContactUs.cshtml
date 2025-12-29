@@ -1,0 +1,366 @@
+﻿@* @{
+    ViewData["Title"] = "Contact Us";
+    Layout = "_Layout";
+}
+
+<style>
+    /* ===== Contact Page – Bookaholic Fantasy Vibe ===== */
+
+    .contact-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+    }
+
+    .contact-hero h1 {
+        font-family: 'Cinzel', serif;
+        color: #C7A86B;
+        font-size: 2.6rem;
+        margin-bottom: .4rem;
+    }
+
+    .contact-hero p {
+        color: #FAF9F6;
+        opacity: .85;
+        max-width: 600px;
+    }
+
+    /* Card styling */
+    .contact-card {
+        background: #2C2E43;
+        border-radius: 16px;
+        padding: 1.6rem;
+        height: 100%;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+        border: 1px solid rgba(199,168,107,0.15);
+    }
+
+        .contact-card h5,
+        .contact-card h6 {
+            color: #C7A86B;
+            font-weight: 600;
+            margin-bottom: .8rem;
+        }
+
+        .contact-card p,
+        .contact-card li {
+            color: #FAF9F6;
+            opacity: .9;
+        }
+
+    /* Info list */
+    .contact-info dt {
+        color: #C7A86B;
+        font-weight: 600;
+    }
+
+    .contact-info dd {
+        color: #FAF9F6;
+        margin-bottom: .75rem;
+    }
+
+    /* Links */
+    .contact-link {
+        color: #C7A86B;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .contact-link:hover {
+            text-decoration: underline;
+            color: #d6b97d;
+        }
+
+    /* Action buttons (soft, not loud) */
+    .contact-action {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        margin-top: .75rem;
+        margin-right: 1rem;
+        color: #2C2E43;
+        background: #C7A86B;
+        padding: .45rem .9rem;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+        .contact-action:hover {
+            background: #d6b97d;
+            color: #2C2E43;
+        }
+
+    /* Quick links */
+    .quick-links a {
+        display: block;
+        color: #FAF9F6;
+        text-decoration: none;
+        margin: .3rem 0;
+    }
+
+        .quick-links a:hover {
+            color: #C7A86B;
+        }
+
+    /* Divider */
+    .soft-divider {
+        border-color: rgba(199,168,107,0.2);
+        margin: 3rem 0 1.5rem;
+    }
+</style>
+
+<div class="contact-wrapper">
+    <!-- Hero -->
+    <div class="contact-hero mb-4">
+        <h1>Contact Us</h1>
+        <p>
+            Questions, suggestions, or just wanna talk books?
+            We’re always down to hear from fellow book lovers 📚✨
+        </p>
+    </div>
+
+    <!-- Content -->
+    <div class="row g-4">
+        <!-- Left: Contact Info -->
+        <div class="col-lg-7">
+            <div class="contact-card">
+                <h5>Bookaholic</h5>
+                <p class="fst-italic mb-3">“So many books, so little time.”</p>
+
+                <dl class="row contact-info">
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">
+                        <a href="mailto:bookaholic@gmail.com" class="contact-link">
+                            <i class="bi bi-envelope-fill me-1"></i>
+                            bookaholic@gmail.com
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4">Phone</dt>
+                    <dd class="col-sm-8">
+                        <a href="tel:+923001234567" class="contact-link">
+                            <i class="bi bi-telephone-fill me-1"></i>
+                            +92 300 1234567
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4">Location</dt>
+                    <dd class="col-sm-8">
+                        Karachi, Pakistan
+                        <span class="opacity-75">(store details on request)</span>
+                    </dd>
+                </dl>
+
+                <div>
+                    <a href="mailto:bookaholic@gmail.com" class="contact-action">
+                        <i class="bi bi-envelope"></i> Email Us
+                    </a>
+                    <a href="tel:+923001234567" class="contact-action">
+                        <i class="bi bi-telephone"></i> Call
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Hours + Links -->
+        <div class="col-lg-5">
+            <div class="contact-card">
+                <h6>Business Hours</h6>
+                <ul class="list-unstyled mb-3">
+                    <li>Mon – Fri: 10:00 – 18:00</li>
+                    <li>Sat: 10:00 – 14:00</li>
+                    <li>Sun: Closed</li>
+                </ul>
+
+                <h6>Explore</h6>
+                <div class="quick-links">
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Fantasy">Fantasy</a>
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Thriller">Thriller</a>
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Islamic">Islamic</a>
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Urdu">Urdu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="soft-divider" />
+
+    <p class="text-center text-muted small">
+        Want a proper contact form next?
+        I can add one with validation + DB save or email send 💌
+    </p>
+</div> *@
+
+
+@{
+    ViewData["Title"] = "Contact Us";
+    Layout = "_Layout";
+}
+
+<style>
+    /* ===== Fantasy light background (NOT white) ===== */
+    body {
+        background-color: #F3EFEA; /* soft parchment */
+    }
+
+    .contact-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+    }
+
+    /* Hero */
+    .contact-hero h1 {
+        font-family: 'Cinzel', serif;
+        color: #2C2E43;
+        font-size: 2.6rem;
+        margin-bottom: .4rem;
+    }
+
+    .contact-hero p {
+        color: #2C2E43;
+        opacity: .85;
+        max-width: 650px;
+    }
+
+    /* Cards */
+    .contact-card {
+        background: #2C2E43;
+        border-radius: 16px;
+        padding: 1.6rem;
+        height: 100%;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+        border: 1px solid rgba(199,168,107,0.18);
+    }
+
+        .contact-card h5,
+        .contact-card h6 {
+            color: #C7A86B;
+            font-weight: 600;
+            margin-bottom: .8rem;
+        }
+
+        .contact-card p,
+        .contact-card li {
+            color: #FAF9F6;
+            opacity: .92;
+        }
+
+    /* Info list */
+    .contact-info dt {
+        color: #C7A86B;
+        font-weight: 600;
+    }
+
+    .contact-info dd {
+        color: #FAF9F6;
+        margin-bottom: .75rem;
+    }
+
+    /* Links */
+    .contact-link {
+        color: #C7A86B;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .contact-link:hover {
+            color: #d6b97d;
+            text-decoration: underline;
+        }
+
+    /* Quick links */
+    .quick-links a {
+        display: block;
+        color: #FAF9F6;
+        text-decoration: none;
+        margin: .35rem 0;
+    }
+
+        .quick-links a:hover {
+            color: #C7A86B;
+        }
+
+    /* Divider */
+    .soft-divider {
+        border-color: rgba(44,46,67,0.25);
+        margin: 3rem 0 1.5rem;
+    }
+
+    /* Footer note */
+    .contact-note {
+        color: #2C2E43;
+        opacity: .7;
+    }
+</style>
+
+<div class="contact-wrapper">
+    <!-- Hero -->
+    <div class="contact-hero mb-4">
+        <h1>Contact Us</h1>
+        <p>
+            Questions, suggestions, or just wanna talk books?
+            We’re always happy to hear from fellow book lovers 📚✨
+        </p>
+    </div>
+
+    <!-- Content -->
+    <div class="row g-4">
+        <!-- Left -->
+        <div class="col-lg-7">
+            <div class="contact-card">
+                <h5>Bookaholic</h5>
+                <p class="fst-italic mb-3">“So many books, so little time.”</p>
+
+                <dl class="row contact-info">
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">
+                        <a href="mailto:bookaholic@gmail.com" class="contact-link">
+                            <i class="bi bi-envelope-fill me-1"></i>
+                            bookaholic@gmail.com
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4">Phone</dt>
+                    <dd class="col-sm-8">
+                        <a href="tel:+923001234567" class="contact-link">
+                            <i class="bi bi-telephone-fill me-1"></i>
+                            +92 300 1234567
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4">Location</dt>
+                    <dd class="col-sm-8">
+                        Lahore, Pakistan
+                        
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Right -->
+        <div class="col-lg-5">
+            <div class="contact-card">
+                <h6>Business Hours</h6>
+                <ul class="list-unstyled mb-3">
+                    <li>Mon – Fri: 8:00 am – 5:00 pm</li>
+                    <li>Sat: 9:00 pm – 4:00 pm</li>
+                    <li>Sun: Closed</li>
+                </ul>
+
+                <h6>Explore</h6>
+                <div class="quick-links">
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Fantasy">Fantasy</a>
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Thriller">Thriller</a>
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Islamic">Islamic</a>
+                    <a asp-controller="Books" asp-action="BookList" asp-route-category="Urdu">Urdu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="soft-divider" />
+
+</div>

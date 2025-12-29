@@ -1,0 +1,110 @@
+﻿<!-- Views/Admin/LowStock.cshtml -->
+@model List<Web_Project.Models.Book>
+
+@{
+    Layout = "_adminLayout";
+    ViewData["Title"] = "Low Stock";
+    var threshold = (int)(ViewBag.LowStockThreshold ?? 5);
+}
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Low Stock Books (≤ @threshold)</h2>
+        <a asp-controller="Admin" asp-action="ManageBooks" class="btn btn-outline-secondary">Manage Books</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card p-3">
+            <div class="text-muted">All books have more than @threshold items in stock.</div>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Cover</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Stock</th>
+                        <th style="width:160px">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="lowStockTbody">
+                    @foreach (var b in Model)
+                    {
+                        <tr data-book-id="@b.BookID">
+                            <td style="width:72px">
+                                <img src="@(string.IsNullOrWhiteSpace(b.CoverImage) ? Url.Content("~/images/placeholder-book.png") : Url.Content(b.CoverImage).Replace(" ", "%20"))" alt="@b.Title" style="height:60px;object-fit:cover;border-radius:6px;" />
+                            </td>
+                            <td>@b.Title</td>
+                            <td>@b.Author</td>
+                            <td class="text-center"><strong class="book-qty">@b.StockQuantity</strong></td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <form method="post" asp-action="Restock" class="restock-form d-flex align-items-center">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@b.BookID" />
+                                        <input type="number" name="amount" value="10" min="1" class="form-control form-control-sm" style="width:86px" />
+                                        <button type="submit" class="btn btn-sm btn-primary ms-1">Restock</button>
+                                    </form>
+                                    <a asp-controller="Admin" asp-action="ManageBooks" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            // AJAX restock: intercept forms, post, update UI (remove row when stock > threshold)
+            document.querySelectorAll('.restock-form').forEach(form => {
+                form.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const fd = new FormData(form);
+                    try {
+                        const res = await fetch(form.action || '/Admin/Restock', {
+                            method: 'POST',
+                            body: fd,
+                            credentials: 'same-origin',
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        });
+                        if (!res.ok) throw new Error('Network error');
+                        const json = await res.json();
+                        if (json && json.success) {
+                            const row = form.closest('tr');
+                            if (!row) return;
+                            const qtySpan = row.querySelector('.book-qty');
+                            if (qtySpan && json.newQty !== undefined) qtySpan.textContent = json.newQty;
+                            // remove row if now above threshold
+                            const threshold = @((int)(ViewBag.LowStockThreshold ?? 5));
+                            if (json.newQty > threshold) {
+                                row.parentNode.removeChild(row);
+                            }
+                            // If no rows left, show friendly empty
+                            const tbody = document.getElementById('lowStockTbody');
+                            if (tbody && tbody.children.length === 0) {
+                                const container = document.createElement('div');
+                                container.className = 'card p-3';
+                                container.innerHTML = '<div class="text-muted">All books have sufficient stock now.</div>';
+                                tbody.closest('.table-responsive').replaceWith(container);
+                            }
+                        } else {
+                            alert((json && json.message) || 'Could not restock.');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Error restocking book.');
+                    }
+                });
+            });
+        })();
+    </script>
+}

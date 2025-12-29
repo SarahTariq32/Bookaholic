@@ -1,0 +1,94 @@
+﻿@* @model int
+<style>
+    .sales-bar {
+        background: #A26769;
+        color: #FAF9F6;
+        border-top: 1px solid rgba(255,255,255,0.04);
+        padding: 8px 0;
+        font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        font-size: 0.95rem;
+    }
+
+    .sales-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        justify-content: flex-start;
+        padding: 0 12px;
+    }
+
+    .sales-count {
+        font-family: 'Cinzel', serif;
+        color: #C7A86B;
+        font-weight: 700;
+        font-size: 1.05rem;
+        line-height: 1;
+        min-width: 44px;
+        text-align: left;
+        display: inline-block;
+    }
+
+    .sales-text {
+        color: #FAF9F6;
+        opacity: 0.95;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+    }
+</style>
+
+<div class="sales-bar" role="status" aria-live="polite" aria-atomic="true">
+    <div class="sales-inner">
+        <span class="sales-count">@Model</span>
+        <span class="sales-text">books sold this month</span>
+    </div>
+</div> *@
+
+@model int
+<style>
+    /* Narrow, centered sales bar with increased letter-spacing */
+    .sales-bar {
+        background: #A26769;
+        color: #FAF9F6;
+        border-top: 1px solid rgba(255,255,255,0.04);
+        height: 20px; /* reduced height */
+        display: flex;
+        align-items: center;
+        justify-content: center; /* center alignment */
+        font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.9px; /* increased letter spacing */
+        padding: 0 12px; /* horizontal padding only */
+        box-sizing: border-box;
+    }
+
+    .sales-inner {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sales-count {
+        font-family: 'Cinzel', serif;
+        color: #C7A86B; /* accent */
+        font-weight: 700;
+        font-size: 1.02rem;
+        line-height: 1;
+        display: inline-block;
+    }
+
+    .sales-text {
+        color: #FAF9F6;
+        opacity: 0.95;
+        font-weight: 600;
+    }
+</style>
+
+<div class="sales-bar" role="status" aria-live="polite" aria-atomic="true">
+    <div class="sales-inner">
+        <span class="sales-count">@Model</span>
+        <span class="sales-text">books sold this month</span>
+    </div>
+</div>

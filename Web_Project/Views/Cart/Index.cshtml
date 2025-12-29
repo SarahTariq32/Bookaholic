@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Cart";
     Layout = "_Layout";
 }
@@ -79,4 +79,77 @@
 
         </div>
     </div>
+</div> *@
+@model List<Web_Project.Models.ViewModels.CartItemVM>
+
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
+}
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold">Your Cart 🛒</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            Your cart is empty. <a asp-controller="Home" asp-action="Index">Continue shopping</a>.
+        </div>
+    }
+    else
+    {
+        <div class="cart-items">
+            @foreach (var item in Model)
+            {
+                <div class="cart-item d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                    <div class="d-flex align-items-center">
+                        <img src="@(string.IsNullOrWhiteSpace(item.CoverImage) ? Url.Content("~/images/placeholder-book.png") : item.CoverImage)" alt="@item.Title" class="cart-img rounded" style="width:90px; height:auto;" />
+                        <div class="ms-3">
+                            <h5 class="mb-1 fw-semibold">@item.Title</h5>
+                            <p class="mb-1 text-muted small">PKR @item.Price.ToString("N0")</p>
+
+                            <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline-flex align-items-center">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@item.BookID" />
+                                <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control form-control-sm me-2" style="width:80px;" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <p class="mb-2 fw-bold">PKR @item.LineTotal.ToString("N0")</p>
+
+                        <form asp-controller="Cart" asp-action="Remove" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="bookId" value="@item.BookID" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="cart-summary mt-4 text-end">
+            <h5 class="fw-semibold">
+                Total:
+                <span class="text-primary">
+                    PKR @Model.Sum(i => i.LineTotal).ToString("N0")
+                </span>
+            </h5>
+
+            <div class="mt-4">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary me-3">Continue Shopping</a>
+
+                <form asp-controller="Cart" asp-action="Checkout" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+                </form>
+            </div>
+        </div>
+    }
 </div>
