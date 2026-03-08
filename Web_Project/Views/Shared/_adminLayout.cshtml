@@ -1,10 +1,7 @@
-﻿@* 
-
-
-@using System.Linq
+﻿@using System.Linq
 @inject Web_Project.Models.Interfaces.IBookService BookService
 @{
-    // compute low-stock count before rendering so layout can reference it safely
+
     var lowCount = 0;
     try
     {
@@ -26,14 +23,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
-        /* Remove browser body margin and keep same page background */
         html, body {
             margin: 0;
             height: 100%;
             background: #F3F4F6;
         }
 
-        /* Minimal admin helpers to avoid UI regressions */
         .admin-navbar {
             background: #1F2937;
             color: #fff;
@@ -44,185 +39,15 @@
                 font-weight: 700;
             }
 
-        /* Sidebar base - kept same as original but make it sticky so it doesn't scroll away */
+    
         .admin-sidebar {
             background: #1F2937;
             padding: 1rem;
             min-height: 100vh;
-            position: -webkit-sticky; /* Safari */
+            position: -webkit-sticky;
             position: sticky;
             top: 0;
-            z-index: 1020; /* keeps sidebar above page content if needed */
-        }
-
-        .sidebar-item {
-            color: #fff;
-            display: block;
-            padding: .75rem;
-            border-radius: .5rem;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-            .sidebar-item:hover, .sidebar-item.active {
-                background: #C7A86B;
-                color: #1F2937 !important;
-            }
-
-        .btn-blue {
-            background: #1F2937;
-            color: #fff;
-            border-radius: .5rem;
-        }
-
-        .btn-red {
-            background: #ff4d4d;
-            color: #fff;
-            border-radius: .5rem;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav class="navbar admin-navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <!-- offcanvas toggle (small screens) -->
-                <button class="btn btn-outline-light d-lg-none me-2" type="button"
-                        data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas"
-                        aria-controls="adminSidebarOffcanvas" aria-label="Toggle sidebar">
-                    ☰
-                </button>
-
-                <a class="navbar-brand" href="/Admin/Dashboard">Bookaholic Admin</a>
-
-                <div class="ms-auto">
-                    <form asp-controller="Admin" asp-action="Logout" method="post" class="d-inline">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-sm btn-light">Logout</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Offcanvas for small screens -->
-    <div class="offcanvas offcanvas-start d-lg-none text-white" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarLabel" style="background:#1F2937;">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title text-white" id="adminSidebarLabel">Admin</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body admin-sidebar">
-            <nav class="nav flex-column">
-                <a href="/Admin/Dashboard" class="sidebar-item nav-link text-white">Dashboard</a>
-                <a href="/Admin/ManageBooks" class="sidebar-item nav-link text-white">Manage Books</a>
-                <a href="@Url.Action("LowStock", "Admin")" class="sidebar-item @(lowCount > 0 ? "text-warning fw-bold" : "")">
-                    Low Stock
-                    @if (lowCount > 0)
-                    {
-                        <span class="badge bg-warning text-dark ms-2">@lowCount</span>
-                    }
-                </a>
-                <a href="/Admin/ManageCategories" class="sidebar-item nav-link text-white">Manage Categories</a>
-                <a href="/Admin/ManageOrders" class="sidebar-item nav-link text-white">Manage Orders</a>
-                <a href="/Admin/Reports" class="sidebar-item nav-link text-white">Reports</a>
-                <a href="/Home/Index" class="sidebar-item nav-link text-white">Home Page</a>
-            </nav>
-        </div>
-    </div>
-
-    <div class="container-fluid px-0">
-        <div class="row g-0">
-            <!-- static/sticky sidebar on large screens -->
-            <aside class="col-12 col-lg-2 d-none d-lg-block pe-0">
-                <div class="admin-sidebar text-white" style="">
-                    <nav class="nav flex-column">
-                        <a href="/Admin/Dashboard" class="sidebar-item nav-link text-white">Dashboard</a>
-                        <a href="/Admin/ManageBooks" class="sidebar-item nav-link text-white">Manage Books</a>
-                        <a href="@Url.Action("LowStock", "Admin")" class="sidebar-item @(lowCount > 0 ? "text-warning fw-bold" : "")">
-                            Low Stock
-                            @if (lowCount > 0)
-                            {
-                                <span class="badge bg-warning text-dark ms-2">@lowCount</span>
-                            }
-                        </a>
-                        <a href="/Admin/ManageCategories" class="sidebar-item nav-link text-white">Manage Categories</a>
-                        <a href="/Admin/ManageOrders" class="sidebar-item nav-link text-white">Manage Orders</a>
-                        <a href="/Admin/Reports" class="sidebar-item nav-link text-white">Reports</a>
-                        <a href="/Home/Index" class="sidebar-item nav-link text-white">Home Page</a>
-                    </nav>
-                </div>
-            </aside>
-
-            <!-- main content area - RenderBody MUST be called -->
-            <main class="col-12 col-lg-10 p-4" role="main">
-                @RenderBody()
-            </main>
-        </div>
-    </div>
-
-    <footer class="mt-4">
-        <div class="container">
-            <small class="text-muted">&copy; 2025 Bookaholic</small>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    @RenderSection("Scripts", required: false)
-</body>
-</html> *@
-
-@using System.Linq
-@inject Web_Project.Models.Interfaces.IBookService BookService
-@{
-    // compute low-stock count before rendering so layout can reference it safely
-    var lowCount = 0;
-    try
-    {
-        var books = await BookService.GetAllBooksAsync();
-        lowCount = books?.Count(b => b.StockQuantity <= 5) ?? 0;
-    }
-    catch
-    {
-        lowCount = 0;
-    }
-}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - Admin - Bookaholic</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    <style>
-        /* Remove browser body margin and keep same page background */
-        html, body {
-            margin: 0;
-            height: 100%;
-            background: #F3F4F6;
-        }
-
-        /* Minimal admin helpers to avoid UI regressions */
-        .admin-navbar {
-            background: #1F2937;
-            color: #fff;
-        }
-
-            .admin-navbar .navbar-brand {
-                color: #C7A86B;
-                font-weight: 700;
-            }
-
-        /* Sidebar base - kept same as original but make it sticky so it doesn't scroll away */
-        .admin-sidebar {
-            background: #1F2937;
-            padding: 1rem;
-            min-height: 100vh;
-            position: -webkit-sticky; /* Safari */
-            position: sticky;
-            top: 0;
-            z-index: 1020; /* keeps sidebar above page content if needed */
+            z-index: 1020; 
         }
 
         .sidebar-item {
@@ -251,18 +76,17 @@
             border-radius: .5rem;
         }
 
-        /* admin toast container */
         #orderNotifications {
             position: fixed;
             top: 80px;
             right: 20px;
             width: 320px;
             z-index: 12000;
-            pointer-events: none; /* allow clicks through empty areas */
+            pointer-events: none;
         }
 
             #orderNotifications .toast {
-                pointer-events: auto; /* allow interaction with toasts */
+                pointer-events: auto; 
                 margin-bottom: .5rem;
             }
     </style>
@@ -317,7 +141,6 @@
 
     <div class="container-fluid px-0">
         <div class="row g-0">
-            <!-- static/sticky sidebar on large screens -->
             <aside class="col-12 col-lg-2 d-none d-lg-block pe-0">
                 <div class="admin-sidebar text-white" style="">
                     <nav class="nav flex-column">
@@ -338,7 +161,6 @@
                 </div>
             </aside>
 
-            <!-- main content area - RenderBody MUST be called -->
             <main class="col-12 col-lg-10 p-4" role="main">
                 @RenderBody()
             </main>
@@ -351,12 +173,10 @@
         </div>
     </footer>
 
-    <!-- Global toast container (rendered for all admin pages) -->
     <div id="orderNotifications" aria-live="polite" aria-atomic="true"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- SignalR client + global admin connection (runs on every admin page) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js" crossorigin="anonymous"></script>
     <script>
         (function () {
@@ -390,7 +210,6 @@
                     const closeBtn = div.querySelector(".btn-close");
                     if (closeBtn) closeBtn.addEventListener("click", () => div.remove());
 
-                    // auto remove after 12s
                     setTimeout(() => {
                         if (div.parentNode) div.parentNode.removeChild(div);
                     }, 12000);

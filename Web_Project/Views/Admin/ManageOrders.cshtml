@@ -1,601 +1,4 @@
-﻿@* @model List<Web_Project.Models.Order>
-@using System.Linq
-
-@{
-    Layout = "_adminLayout";
-
-    var pending = Model?
-        .Where(o => !string.Equals(o.Status, "Delivered", StringComparison.OrdinalIgnoreCase))
-        .OrderByDescending(o => o.OrderDate)
-        .ToList() ?? new List<Web_Project.Models.Order>();
-
-    var delivered = Model?
-        .Where(o => string.Equals(o.Status, "Delivered", StringComparison.OrdinalIgnoreCase))
-        .OrderByDescending(o => o.OrderDate)
-        .ToList() ?? new List<Web_Project.Models.Order>();
-}
-
-@functions {
-    private string GetBookTitle(int bookId)
-    {
-        var dict = ViewBag.BookTitles as IDictionary<int, string>;
-        if (dict != null && dict.TryGetValue(bookId, out var title))
-        {
-            return title;
-        }
-        return "Unknown Book";
-    }
-}
-
-<style>
-    .orders-card { background-color: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.08); padding: 1rem; margin-bottom: 1rem; }
-    .section-header { cursor: pointer; }
-    .td-wrap { white-space: normal; word-break: break-word; max-width: 240px; }
-    .actions-inline > * { margin-right: .35rem; margin-bottom: .25rem; }
-</style>
-
-<h2 class="mb-4">Manage Orders</h2>
-
-@if (TempData["Success"] != null) { <div class="alert alert-success">@TempData["Success"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
-
-<div class="orders-card">
-    <div class="mb-3">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center section-header" data-bs-toggle="collapse" data-bs-target="#pendingOrdersCollapse" aria-expanded="false" aria-controls="pendingOrdersCollapse">
-                <div>
-                    <strong>Pending Orders</strong>
-                    <small class="text-muted">(@pending.Count)</small>
-                </div>
-                <button class="btn btn-link">Show</button>
-            </div>
-
-            <div id="pendingOrdersCollapse" class="collapse">
-                <div class="card-body p-0">
-                    @if (pending.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th class="d-none d-sm-table-cell">Email</th>
-                                        <th class="d-none d-sm-table-cell">Phone</th>
-                                        <th>Address</th>
-                                        <th class="d-none d-md-table-cell">Order Date</th>
-                                        <th class="d-none d-md-table-cell">Total</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var order in pending)
-                                    {
-                                        <tr>
-                                            <td class="align-middle">@order.Id</td>
-                                            <td class="align-middle">@order.CustomerName</td>
-                                            <td class="align-middle d-none d-sm-table-cell text-truncate" style="max-width:200px;">@order.CustomerEmail</td>
-                                            <td class="align-middle d-none d-sm-table-cell">@order.CustomerPhone</td>
-                                            <td class="align-middle td-wrap">@order.Address</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.OrderDate.ToString("dd MMM yyyy")</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.TotalAmount.ToString("C")</td>
-                                            <td class="align-middle">@order.Status</td>
-                                            <td class="align-middle" style="white-space:nowrap;">
-                                                <div class="actions-inline d-inline-flex flex-wrap align-items-center">
-                                                    <!-- Use data-order-id instead of interpolated selector to avoid invalid selector text -->
-                                                    <button type="button" class="btn btn-primary btn-sm details-btn" data-order-id="@order.Id">Details</button>
-
-                                                    <form method="post" asp-action="MarkDelivered" style="display:inline;">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="id" value="@order.Id" />
-                                                        <button type="submit" class="btn btn-success btn-sm">Deliver</button>
-                                                    </form>
-
-                                                    <form method="post" asp-action="DeleteOrder" style="display:inline;">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="id" value="@order.Id" />
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="p-3">No pending orders.</div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center section-header" data-bs-toggle="collapse" data-bs-target="#deliveredOrdersCollapse" aria-expanded="false" aria-controls="deliveredOrdersCollapse">
-                <div>
-                    <strong>Delivered Orders</strong>
-                    <small class="text-muted">(@delivered.Count)</small>
-                </div>
-                <button class="btn btn-link">Show</button>
-            </div>
-
-            <div id="deliveredOrdersCollapse" class="collapse">
-                <div class="card-body p-0">
-                    @if (delivered.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th class="d-none d-sm-table-cell">Email</th>
-                                        <th class="d-none d-sm-table-cell">Phone</th>
-                                        <th>Address</th>
-                                        <th class="d-none d-md-table-cell">Order Date</th>
-                                        <th class="d-none d-md-table-cell">Total</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var order in delivered)
-                                    {
-                                        <tr>
-                                            <td class="align-middle">@order.Id</td>
-                                            <td class="align-middle">@order.CustomerName</td>
-                                            <td class="align-middle d-none d-sm-table-cell text-truncate" style="max-width:200px;">@order.CustomerEmail</td>
-                                            <td class="align-middle d-none d-sm-table-cell">@order.CustomerPhone</td>
-                                            <td class="align-middle td-wrap">@order.Address</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.OrderDate.ToString("dd MMM yyyy")</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.TotalAmount.ToString("C")</td>
-                                            <td class="align-middle">@order.Status</td>
-                                            <td class="align-middle" style="white-space:nowrap;">
-                                                <div class="actions-inline d-inline-flex flex-wrap align-items-center">
-                                                    <button type="button" class="btn btn-primary btn-sm details-btn" data-order-id="@order.Id">Details</button>
-
-                                                    <form method="post" asp-action="DeleteOrder" style="display:inline;">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="id" value="@order.Id" />
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="p-3">No delivered orders.</div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Render all modals outside of the tables (prevents table nesting issues) -->
-@foreach(var order in pending.Concat(delivered))
-{
-    @await Html.PartialAsync("_OrderDetailsModal", new Web_Project.Models.ViewModels.OrderDetailsVM {
-        OrderId = order.Id,
-        CustomerName = order.CustomerName,
-        CustomerEmail = order.CustomerEmail,
-        CustomerPhone = order.CustomerPhone,
-        Address = order.Address,
-        Status = order.Status,
-        TotalAmount = order.TotalAmount,
-        ShippingFee = 200,
-        EstimatedDelivery = order.OrderDate.AddDays(3),
-        PaymentMethod = string.IsNullOrWhiteSpace(order.PaymentMethod) ? "N/A" : order.PaymentMethod,
-   
-        Items = (order.OrderDetails ?? new List<Web_Project.Models.OrderDetail>()).Select(d => new Web_Project.Models.ViewModels.OrderItemVM {
-            BookTitle = GetBookTitle(d.BookID),
-            Quantity = d.Quantity,
-            Price = d.PriceAtPurchase
-        }).ToList()
-    })
-}
-
-@section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js" crossorigin="anonymous"></script>
-
-    <script>
-        (function () {
-            const connection = new signalR.HubConnectionBuilder()
-                .withUrl("/orderHub")
-                .withAutomaticReconnect()
-                .build();
-
-            connection.on("NewOrder", function (data) {
-                const container = document.getElementById("orderNotifications");
-                if (!container) return;
-
-                const id = "notif-" + Date.now();
-                const div = document.createElement("div");
-                div.id = id;
-                div.className = "toast align-items-center text-bg-info border-0 show";
-                div.setAttribute("role", "alert");
-                div.setAttribute("aria-live", "assertive");
-                div.setAttribute("aria-atomic", "true");
-                div.innerHTML = `
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            New order <strong>#${data.orderId}</strong><br/>
-                            ${data.customer} — PKR ${Number(data.total).toLocaleString()}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"></button>
-                    </div>`;
-
-                container.prepend(div);
-                div.querySelector(".btn-close").addEventListener("click", () => div.remove());
-
-                setTimeout(() => {
-                    if (div.parentNode) div.parentNode.removeChild(div);
-                }, 12000);
-            });
-
-            connection.start().catch(function (err) {
-                console.error("SignalR connection error:", err.toString());
-            });
-        })();
-    </script>
-
-    <script>
-        // Attach click handlers to Details buttons and show modal by id built at runtime.
-        document.addEventListener('DOMContentLoaded', function () {
-            if (typeof bootstrap === 'undefined' || !bootstrap.Modal) {
-                console.error('Bootstrap JS not available. Ensure bootstrap.bundle.min.js is loaded in the layout.');
-                return;
-            }
-
-            const buttons = document.querySelectorAll('.details-btn');
-            buttons.forEach(btn => {
-                // ensure it's not treated as submit
-                btn.type = 'button';
-
-                if (btn.dataset._bound) return;
-                btn.dataset._bound = '1';
-
-                btn.addEventListener('click', function () {
-                    const orderId = btn.getAttribute('data-order-id');
-                    if (!orderId) return;
-
-                    const selector = '#detailsModal' + orderId;
-                    const modalEl = document.querySelector(selector);
-                    if (!modalEl) {
-                        console.warn('Modal not found for selector', selector);
-                        return;
-                    }
-
-                    try {
-                        const modal = new bootstrap.Modal(modalEl);
-                        modal.show();
-                    } catch (ex) {
-                        console.error('Failed to show modal', ex);
-                    }
-                });
-            });
-        });
-    </script>
-} *@
-
-
-@* @model List<Web_Project.Models.Order>
-@using System.Linq
-
-@{
-    Layout = "_adminLayout";
-}
-
-@functions {
-    private string GetBookTitle(int bookId)
-    {
-        var dict = ViewBag.BookTitles as IDictionary<int, string>;
-        if (dict != null && dict.TryGetValue(bookId, out var title))
-        {
-            return title;
-        }
-        return "Unknown Book";
-    }
-}
-
-<style>
-    .orders-card {
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .section-header {
-        cursor: pointer;
-    }
-
-    .td-wrap {
-        white-space: normal;
-        word-break: break-word;
-        max-width: 240px;
-    }
-
-    .actions-inline > * {
-        margin-right: .35rem;
-        margin-bottom: .25rem;
-    }
-
-    #orderNotifications {
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        width: 320px;
-        z-index: 1200;
-    }
-</style>
-
-<div id="orderNotifications" aria-live="polite" aria-atomic="true"></div>
-
-<h2 class="mb-4">Manage Orders</h2>
-
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
-
-<div class="orders-card">
-    @{
-        var pending = Model?
-        .Where(o => !string.Equals(o.Status, "Delivered", StringComparison.OrdinalIgnoreCase))
-        .OrderByDescending(o => o.OrderDate)
-        .ToList() ?? new List<Web_Project.Models.Order>();
-
-        var delivered = Model?
-        .Where(o => string.Equals(o.Status, "Delivered", StringComparison.OrdinalIgnoreCase))
-        .OrderByDescending(o => o.OrderDate)
-        .ToList() ?? new List<Web_Project.Models.Order>();
-    }
-
-    <div class="mb-3">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center section-header" data-bs-toggle="collapse" data-bs-target="#pendingOrdersCollapse" aria-expanded="false" aria-controls="pendingOrdersCollapse">
-                <div>
-                    <strong>Pending Orders</strong>
-                    <small class="text-muted">(@pending.Count)</small>
-                </div>
-                <button class="btn btn-link">Show</button>
-            </div>
-
-            <div id="pendingOrdersCollapse" class="collapse">
-                <div class="card-body p-0">
-                    @if (pending.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th class="d-none d-sm-table-cell">Email</th>
-                                        <th class="d-none d-sm-table-cell">Phone</th>
-                                        <th>Address</th>
-                                        <th class="d-none d-md-table-cell">Order Date</th>
-                                        <th class="d-none d-md-table-cell">Total</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var order in pending)
-                                    {
-                                        <tr>
-                                            <td class="align-middle">@order.Id</td>
-                                            <td class="align-middle">@order.CustomerName</td>
-                                            <td class="align-middle d-none d-sm-table-cell text-truncate" style="max-width:200px;">@order.CustomerEmail</td>
-                                            <td class="align-middle d-none d-sm-table-cell">@order.CustomerPhone</td>
-                                            <td class="align-middle td-wrap">@order.Address</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.OrderDate.ToString("dd MMM yyyy")</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.TotalAmount.ToString("C")</td>
-                                            <td class="align-middle">@order.Status</td>
-                                            <td class="align-middle" style="white-space:nowrap;">
-                                                <div class="actions-inline d-inline-flex flex-wrap align-items-center">
-                                                    <button type="button" class="btn btn-primary btn-sm details-btn" data-order-id="@order.Id">Details</button>
-
-                                                    <form method="post" asp-action="MarkDelivered" style="display:inline;">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="id" value="@order.Id" />
-                                                        <button type="submit" class="btn btn-success btn-sm">Deliver</button>
-                                                    </form>
-
-                                                    <form method="post" asp-action="DeleteOrder" style="display:inline;">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="id" value="@order.Id" />
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="p-3">No pending orders.</div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center section-header" data-bs-toggle="collapse" data-bs-target="#deliveredOrdersCollapse" aria-expanded="false" aria-controls="deliveredOrdersCollapse">
-                <div>
-                    <strong>Delivered Orders</strong>
-                    <small class="text-muted">(@delivered.Count)</small>
-                </div>
-                <button class="btn btn-link">Show</button>
-            </div>
-
-            <div id="deliveredOrdersCollapse" class="collapse">
-                <div class="card-body p-0">
-                    @if (delivered.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th class="d-none d-sm-table-cell">Email</th>
-                                        <th class="d-none d-sm-table-cell">Phone</th>
-                                        <th>Address</th>
-                                        <th class="d-none d-md-table-cell">Order Date</th>
-                                        <th class="d-none d-md-table-cell">Total</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var order in delivered)
-                                    {
-                                        <tr>
-                                            <td class="align-middle">@order.Id</td>
-                                            <td class="align-middle">@order.CustomerName</td>
-                                            <td class="align-middle d-none d-sm-table-cell text-truncate" style="max-width:200px;">@order.CustomerEmail</td>
-                                            <td class="align-middle d-none d-sm-table-cell">@order.CustomerPhone</td>
-                                            <td class="align-middle td-wrap">@order.Address</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.OrderDate.ToString("dd MMM yyyy")</td>
-                                            <td class="align-middle d-none d-md-table-cell">@order.TotalAmount.ToString("C")</td>
-                                            <td class="align-middle">@order.Status</td>
-                                            <td class="align-middle" style="white-space:nowrap;">
-                                                <div class="actions-inline d-inline-flex flex-wrap align-items-center">
-                                                    <button type="button" class="btn btn-primary btn-sm details-btn" data-order-id="@order.Id">Details</button>
-
-                                                    <form method="post" asp-action="DeleteOrder" style="display:inline;">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="id" value="@order.Id" />
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="p-3">No delivered orders.</div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- single container for AJAX-loaded modal -->
-<div id="order-modal-container"></div>
-
-@section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js" crossorigin="anonymous"></script>
-
-    <script>
-        (function () {
-            const connection = new signalR.HubConnectionBuilder()
-                .withUrl("/orderHub")
-                .withAutomaticReconnect()
-                .build();
-
-            connection.on("NewOrder", function (data) {
-                const container = document.getElementById("orderNotifications");
-                if (!container) return;
-
-                const id = "notif-" + Date.now();
-                const div = document.createElement("div");
-                div.id = id;
-                div.className = "toast align-items-center text-bg-info border-0 show";
-                div.setAttribute("role", "alert");
-                div.setAttribute("aria-live", "assertive");
-                div.setAttribute("aria-atomic", "true");
-                div.innerHTML = `
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            New order <strong>#${data.orderId}</strong><br/>
-                            ${data.customer} — PKR ${Number(data.total).toLocaleString()}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"></button>
-                    </div>`;
-
-                container.prepend(div);
-                div.querySelector(".btn-close").addEventListener("click", () => div.remove());
-
-                setTimeout(() => {
-                    if (div.parentNode) div.parentNode.removeChild(div);
-                }, 12000);
-            });
-
-            connection.start().catch(function (err) {
-                console.error("SignalR connection error:", err.toString());
-            });
-        })();
-    </script>
-
-    <script>
-        // Delegated handler: fetch partial HTML and show as Bootstrap modal
-        document.addEventListener('click', async function (ev) {
-            const btn = ev.target.closest('.details-btn');
-            if (!btn) return;
-
-            const orderId = btn.getAttribute('data-order-id');
-            if (!orderId) return;
-
-            try {
-                const url = `/Admin/OrderDetails?id=${encodeURIComponent(orderId)}`;
-                const res = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-                if (!res.ok) {
-                    console.error('Failed to load order details', res.status);
-                    return;
-                }
-                const html = await res.text();
-
-                const container = document.getElementById('order-modal-container');
-                container.innerHTML = html;
-
-                const modalEl = container.querySelector('.modal');
-                if (!modalEl) {
-                    console.warn('Returned partial does not contain a modal element.');
-                    return;
-                }
-
-                // initialize and show the modal using Bootstrap
-                const modal = new bootstrap.Modal(modalEl);
-                modal.show();
-            } catch (err) {
-                console.error('Error loading order details', err);
-            }
-        }, false);
-    </script>
-} *@
-
-
-
-
-@model List<Web_Project.Models.Order>
+﻿@model List<Web_Project.Models.Order>
 @using System.Linq
 
 @{
@@ -820,7 +223,7 @@
     </div>
 </div>
 
-<!-- single container for AJAX-loaded modal -->
+
 <div id="order-modal-container"></div>
 
 @section Scripts {
@@ -868,7 +271,6 @@
     </script>
 
     <script>
-        // Delegated handler: fetch partial HTML and show as Bootstrap modal
         document.addEventListener('click', async function (ev) {
             const btn = ev.target.closest('.details-btn');
             if (!btn) return;
@@ -893,8 +295,6 @@
                     console.warn('Returned partial does not contain a modal element.');
                     return;
                 }
-
-                // initialize and show the modal using Bootstrap
                 const modal = new bootstrap.Modal(modalEl);
                 modal.show();
             } catch (err) {
@@ -904,7 +304,6 @@
     </script>
 
     <script>
-        // AJAX-handler for Deliver button (mark delivered), moves row to delivered table and updates counts
         document.addEventListener('DOMContentLoaded', function () {
             const notifContainer = document.getElementById('orderNotifications');
 
@@ -952,7 +351,6 @@
                 let tbody = document.getElementById('deliveredTbody');
                 if (tbody) return tbody;
 
-                // create table structure inside deliveredOrdersCollapse card-body
                 const collapse = document.getElementById('deliveredOrdersCollapse');
                 if (!collapse) return null;
                 const cardBody = collapse.querySelector('.card-body');
@@ -980,7 +378,6 @@
                 return document.getElementById('deliveredTbody');
             }
 
-            // Intercept all mark-delivered forms
             document.querySelectorAll('.mark-delivered-form').forEach(form => {
                 form.addEventListener('submit', async function (e) {
                     e.preventDefault();
@@ -1002,46 +399,40 @@
                         if (json && json.success) {
                             showToast(json.message || 'Order is being delivered', 'success');
 
-                            // update row: set status, remove deliver form, move to delivered tbody
                             const tr = form.closest('tr');
                             if (tr) {
                                 const orderId = json.orderId || tr.getAttribute('data-order-id') || fd.get('id');
                                 tr.setAttribute('data-order-id', orderId);
 
-                                // update status cell
                                 const statusCell = tr.querySelector('.order-status');
                                 if (statusCell) statusCell.textContent = 'Delivered';
 
-                                // remove deliver form from actions
                                 const actions = tr.querySelector('.order-actions');
                                 if (actions) {
                                     const deliverForm = actions.querySelector('.mark-delivered-form');
                                     if (deliverForm) deliverForm.remove();
                                 }
 
-                                // remove any "empty" placeholder row in delivered area
                                 const deliveredEmpty = document.getElementById('deliveredEmptyMsg');
                                 if (deliveredEmpty) deliveredEmpty.remove();
 
-                                // ensure delivered tbody exists
                                 const deliveredTbody = ensureDeliveredTable();
                                 if (deliveredTbody) {
-                                    // append to top
+
                                     deliveredTbody.prepend(tr);
                                 } else {
-                                    // fallback: remove the row to avoid duplicates
+
                                     tr.remove();
                                 }
 
-                                // update counts
+
                                 updateCountElements(-1, +1);
 
-                                // if pending tbody is now empty, insert placeholder message
+
                                 const pendingTbody = document.getElementById('pendingTbody');
                                 if (pendingTbody && pendingTbody.querySelectorAll('tr').length === 0) {
                                     const pendingCardBody = document.querySelector('#pendingOrdersCollapse .card-body');
                                     if (pendingCardBody) {
-                                        // remove table wrapper and show empty message
                                         pendingCardBody.innerHTML = `<div id="pendingEmptyMsg" class="p-3">No pending orders.</div>`;
                                     }
                                 }
@@ -1056,7 +447,6 @@
                 });
             });
 
-            // Leave delete forms as normal POSTs for now. If you want AJAX delete, I can add it similarly.
         });
     </script>
 }

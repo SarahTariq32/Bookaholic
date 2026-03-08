@@ -1,5 +1,4 @@
-﻿<!-- Views/Admin/LowStock.cshtml -->
-@model List<Web_Project.Models.Book>
+﻿@model List<Web_Project.Models.Book>
 
 @{
     Layout = "_adminLayout";
@@ -64,7 +63,6 @@
 @section Scripts {
     <script>
         (function () {
-            // AJAX restock: intercept forms, post, update UI (remove row when stock > threshold)
             document.querySelectorAll('.restock-form').forEach(form => {
                 form.addEventListener('submit', async function (e) {
                     e.preventDefault();
@@ -83,12 +81,10 @@
                             if (!row) return;
                             const qtySpan = row.querySelector('.book-qty');
                             if (qtySpan && json.newQty !== undefined) qtySpan.textContent = json.newQty;
-                            // remove row if now above threshold
                             const threshold = @((int)(ViewBag.LowStockThreshold ?? 5));
                             if (json.newQty > threshold) {
                                 row.parentNode.removeChild(row);
                             }
-                            // If no rows left, show friendly empty
                             const tbody = document.getElementById('lowStockTbody');
                             if (tbody && tbody.children.length === 0) {
                                 const container = document.createElement('div');

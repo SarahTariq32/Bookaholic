@@ -1,24 +1,4 @@
-﻿@* @model Order
-
-<div class="container mt-5">
-
-    <h2 style="color:#ff4d79;">Order #@Model.Id</h2>
-    <p><strong>Name:</strong> @Model.CustomerName</p>
-    <p><strong>Status:</strong> @Model.Status</p>
-
-    <h4 class="mt-4" style="color:#ff4d79;">Books</h4>
-
-    <ul class="list-group">
-        @foreach (var item in Model.Items)
-        {
-            <li class="list-group-item d-flex justify-content-between">
-                @item.BookTitle
-                <span>PKR @item.Price</span>
-            </li>
-        }
-    </ul>
-
-</div> *@
+﻿
 @model Web_Project.Controllers.OrderDetailsVM
 
 <div class="container mt-5">
